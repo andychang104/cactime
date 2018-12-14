@@ -1,0 +1,12 @@
+{
+  "appSplashName": "Death Day",
+  "loginTitle": "會員登入",
+  "loginMsg": "曾經加入過的用戶，請登入",
+  "loginEditMailHint": "請輸入電子郵件",
+  "loginEditPasswordHint": "請輸入密碼",
+  "loginTextCheck": "記住帳號",
+  "loginBtn": "E-mail登入/註冊",
+  "noLoginBtn": "體驗試用",
+  "loginLostPassword": "忘記密碼"
+
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Death Day</string>
+
+    <string name="facebook_app_id">257204118356427</string>
+    <!-- Replace "000000000000" with your Facebook App ID here. -->
+    <string name="fb_login_protocol_scheme">fb257204118356427</string>
+
+</resources>

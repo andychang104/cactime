@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "725551685265",
+    "firebase_url": "https://death-day-ea0ce.firebaseio.com",
+    "project_id": "death-day-ea0ce",
+    "storage_bucket": "death-day-ea0ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725551685265:android:1ab93789cfc10fe3",
+        "android_client_info": {
+          "package_name": "cactime.com.cactime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725551685265-fn94ccuuist72ob23iupios7nh0njp3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cactime.com.cactime",
+            "certificate_hash": "0a38fd968030b432d4efdeebb48109aa7d15d60f"
+          }
+        },
+        {
+          "client_id": "725551685265-k490avfm2p0mpuum7rf8ttf4pc5llbih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cactime.com.cactime",
+            "certificate_hash": "0eabd30ccb93fc47fadc81799ddb40b5a54bd977"
+          }
+        },
+        {
+          "client_id": "725551685265-ijg6rpffsolj7a82rjk53qanr5devci6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFxNXe554VzPgiNSFCQpm49pZj46qgOoo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725551685265-ijg6rpffsolj7a82rjk53qanr5devci6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

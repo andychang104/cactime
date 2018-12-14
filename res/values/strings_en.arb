@@ -1,0 +1,11 @@
+{
+  "appSplashName": "Death Day",
+  "loginTitle": "Login",
+  "loginMsg": "User, please login",
+  "loginEditMailHint": "Enter an email",
+  "loginEditPasswordHint": "Enter password",
+  "loginTextCheck": "Save account",
+  "loginBtn": "E-mail Login/Join",
+  "noLoginBtn": "Experience",
+  "loginLostPassword": "Forget password"
+}
