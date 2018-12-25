@@ -1,42 +1,44 @@
 import 'package:cactime/mainIndex.dart';
 import 'package:cactime/util/localdata.dart';
-import 'package:cactime/util/system.dart';
-import 'package:cactime/util/toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-
 localdata localdataclass = new localdata();
 
-
-class newUserSetting extends StatefulWidget {
-  newUserSetting(this.uid);
-
-  final String title = "人生倒數設定";
-  final String uid;
-  RichText birthdayText = new RichText(text: new TextSpan(text: ""));
-
-
+class EditDay extends StatefulWidget {
+  EditDay(this.type);
+  String title = "";
+  final int type;
+  RichText newDayText = new RichText(text: new TextSpan(text: ""));
   @override
-  newUser createState() => newUser();
+  editDay createState() => editDay();
 }
 
-class newUser extends State<newUserSetting> {
+class editDay extends State<EditDay> {
 
-  bool isCheck = false;
-  System selectedSystem;
-  List<System> systemList = localdataclass.getSystemList();
-  toast toastclass = new toast();
+  bool valueTop = false;
+  bool valuePush = false;
 
-  var test = Colors.black54;
+  void onChangedTop(bool value){
+    setState(() {
+      valueTop = value;
+    });
+  }
+
+  void onChangedPush(bool value){
+    setState(() {
+      valuePush = value;
+    });
+  }
+
+  var dayTextColor = Colors.black54;
 
   DateTime selectedDate = DateTime.now();
-  String birthday = "請選擇生日";
+  String newDayText = "請選擇倒數日期";
   int year = 2008;
   int month = 12;
   int day = 31;
-
 
   Future<Null> androidSelectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -47,10 +49,10 @@ class newUser extends State<newUserSetting> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        birthday =
+        newDayText =
             selectedDate.year.toString() + "/" + selectedDate.month.toString() +
                 "/" + selectedDate.day.toString();
-        test = Colors.black;
+        dayTextColor = Colors.black;
       });
   }
 
@@ -62,21 +64,24 @@ class newUser extends State<newUserSetting> {
         year = selectedDate.year;
         month = selectedDate.month;
         day = selectedDate.day;
-        birthday = selectedDate.year.toString() + "/" + selectedDate.month.toString() + "/" + selectedDate.day.toString();
-        test = Colors.black;
+        newDayText = selectedDate.year.toString() + "/" + selectedDate.month.toString() + "/" + selectedDate.day.toString();
+        dayTextColor = Colors.black;
       });
     }, currentTime: DateTime(year, month, day), locale: LocaleType.zh);
   }
 
-  void onChanged(bool value) {
-    setState(() {
-      isCheck = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
+
+    if(widget.type == 0){
+      widget.title = "編輯紀念日";
+    }
+    else{
+      widget.title = "編輯倒數日";
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
@@ -93,7 +98,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "姓名：",
+                      "事件：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -104,7 +109,7 @@ class newUser extends State<newUserSetting> {
                       child: new TextField(
                         //controller: new TextEditingController(text: widget.msg1),
                           decoration: InputDecoration(
-                            hintText: "請輸入姓名",
+                            hintText: "請輸入倒數事件名稱",
                             border: new UnderlineInputBorder(),
                           ),
                           style: TextStyle(
@@ -121,7 +126,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "生日：",
+                      "日期：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -131,12 +136,12 @@ class newUser extends State<newUserSetting> {
                       flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: widget.birthdayText = new RichText(
+                        child: widget.newDayText = new RichText(
                           text: new TextSpan(
-                              text: birthday,
+                              text: newDayText,
                               style: new TextStyle(
                                 fontSize: 16.0,
-                                color: test,
+                                color: dayTextColor,
                               ),
                               recognizer: new TapGestureRecognizer()
                                 ..onTap = () {
@@ -160,7 +165,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "性別：",
+                      "置頂：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -170,64 +175,33 @@ class newUser extends State<newUserSetting> {
                       flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: new DropdownButton<System>(
-                          hint: new Text("請選擇性別",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              )),
-                          value: selectedSystem,
-                          onChanged: (System newValue) {
-                            setState(() {
-                              selectedSystem = newValue;
-                            });
-                          },
-                          items: systemList.map((System system) {
-                            return new DropdownMenuItem<System>(
-                              value: system,
-                              child: new Text(
-                                system.systemname,
-                                style: new TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
+                        child: new Text(""),
                       ),
                     ),
+                    new Switch(value: valueTop, onChanged: (bool value) {onChangedTop(value); },),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4.0, right: 8.0),
+                padding: const EdgeInsets.only(
+                    left: 8.0, top: 20.0, right: 8.0),
                 child: Row(
                   children: [
-                    new Checkbox(value: isCheck, onChanged: (bool value) {
-                      //_isEmailCheck = value;
-                      onChanged(value);
-                    }, activeColor: Colors.deepPurple,),
-                    Expanded(
-                        flex: 1,
-                        child: new RichText(
-                          text: new TextSpan(
-                              text: "是否有抽菸習慣",
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
-                              recognizer: new TapGestureRecognizer()
-                                ..onTap = () {
-                                  if (isCheck) {
-                                    onChanged(false);
-                                  }
-                                  else {
-                                    onChanged(true);
-                                  }
-                                }),
-                        ),
+                    new Text(
+                      "通知：",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                      ),
                     ),
-
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: new Text(""),
+                      ),
+                    ),
+                    new Switch(value: valuePush, onChanged: (bool value) {onChangedPush(value); },),
                   ],
                 ),
               ),
@@ -240,7 +214,7 @@ class newUser extends State<newUserSetting> {
                       flex: 1,
                       child: new MaterialButton(
                         height: 45.0,
-                        child: Text("送出",
+                        child: Text("完成",
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white,

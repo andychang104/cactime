@@ -30,6 +30,9 @@ dependencies:
   progress_hud: ^1.1.0
   flutter_facebook_login: ^1.1.1
   google_sign_in: ^3.2.4
+  flutter_datetime_picker: ^1.0.4
+  share: ^0.5.3
+
 
 
 dev_dependencies:
