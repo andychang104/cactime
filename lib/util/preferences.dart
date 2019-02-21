@@ -1,53 +1,42 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:cactime/model/Contact.dart';
+import 'package:cactime/model/Data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String userEmail = "";
-bool emailCheck = false;
+String string = "";
+bool boolean = false;
+List<String> stringList;
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
 
 class preferences {
-  //存借用者帳號
-  Future setUserEmail(String userEmail) async {
+  //存字串
+  Future setString(String key, String string) async {
 // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
 // set value
-    prefs.setString('userEmail', userEmail);
+    prefs.setString(key, string);
   }
 
-  //取借用者帳號
-  String getUserEmail() {
-    getuserEmail ();
-    return userEmail;
-  }
-
-  Future getuserEmail () async {
-    final prefs = await SharedPreferences.getInstance();
-// Try reading data from the counter key. If it does not exist, return 0.
-    userEmail = prefs.getString('userEmail');
-
-  }
-
-
-  //存記住帳號checkbox狀態
-  Future setEmailCheck(bool emailCheck) async {
+  //存布林
+  Future setBool(String key, bool boolean) async {
 // obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
 // set value
-    prefs.setBool('emailCheck', emailCheck);
+    prefs.setBool(key, boolean);
   }
 
-  //取記住帳號checkbox狀態
-  bool getEmailCheck() {
-    getemailCheck ();
-    return emailCheck;
-  }
-
-  Future getemailCheck () async {
+  //存數字
+  Future setInt(String key, int intdata) async {
+// obtain shared preferences
     final prefs = await SharedPreferences.getInstance();
-// Try reading data from the counter key. If it does not exist, return 0.
-    emailCheck = prefs.getBool('emailCheck');
-    if(emailCheck == null){
-      emailCheck = false;
-    };
+// set value
+    prefs.setInt(key, intdata);
   }
+
+
+
 
 }
+

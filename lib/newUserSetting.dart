@@ -1,22 +1,29 @@
 import 'package:cactime/mainIndex.dart';
+import 'package:cactime/util/desireEditWidget.dart';
 import 'package:cactime/util/localdata.dart';
+import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/system.dart';
 import 'package:cactime/util/toast.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-
+import 'package:cactime/model//userdata.dart' as userdata;
 
 localdata localdataclass = new localdata();
+desireEditWidget desireEditWidgetClass = new desireEditWidget();
+preferences preferencesclass = new preferences();
+var userNameEdit = TextEditingController(text: "");
 
 
 class newUserSetting extends StatefulWidget {
-  newUserSetting(this.uid);
+  newUserSetting(this.uid, this.itemRef, this.type);
 
   final String title = "人生倒數設定";
   final String uid;
+  final int type;
+  final DatabaseReference itemRef;
   RichText birthdayText = new RichText(text: new TextSpan(text: ""));
-
 
   @override
   newUser createState() => newUser();
@@ -30,9 +37,12 @@ class newUser extends State<newUserSetting> {
   toast toastclass = new toast();
 
   var test = Colors.black54;
+  var desireTextColor = Colors.black54;
 
   DateTime selectedDate = DateTime.now();
   String birthday = "請選擇生日";
+  String desirelist = "請選擇最想完成的願望";
+  RichText desireText = new RichText(text: new TextSpan(text: ""));
   int year = 2008;
   int month = 12;
   int day = 31;
@@ -47,9 +57,10 @@ class newUser extends State<newUserSetting> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        birthday =
-            selectedDate.year.toString() + "/" + selectedDate.month.toString() +
-                "/" + selectedDate.day.toString();
+        year = selectedDate.year;
+        month = selectedDate.month;
+        day = selectedDate.day;
+        birthday = selectedDate.year.toString() + "/" + selectedDate.month.toString() + "/" + selectedDate.day.toString();
         test = Colors.black;
       });
   }
@@ -73,6 +84,99 @@ class newUser extends State<newUserSetting> {
       isCheck = value;
     });
   }
+
+  void setDesirelist(String msg){
+    setState(() {
+      if(msg.length == 0){
+        desirelist = "請選擇最想完成的願望";
+        desireTextColor = Colors.black54;
+      }
+      else{
+        desirelist = msg;
+        desireTextColor = Colors.black;
+      }
+
+    });
+  }
+
+
+
+  //錯誤訊息確認
+  String checkErrorMsg() {
+    String errorMsg = "";
+    if(userNameEdit.text.length == 0){
+      errorMsg = "姓名";
+    }
+    if(birthday == "請選擇生日"){
+      if(errorMsg.length != 0){
+        errorMsg = errorMsg + "、";
+      }
+      errorMsg = errorMsg + "生日";
+    }
+    if(selectedSystem != null){
+      if(selectedSystem.systemname.length == 0){
+        if(errorMsg.length != 0){
+          errorMsg = errorMsg + "、";
+        }
+        errorMsg = errorMsg + "性別";
+      }
+    }
+    else{
+      if(errorMsg.length != 0){
+        errorMsg = errorMsg + "、";
+      }
+      errorMsg = errorMsg + "性別";
+    }
+
+    if(widget.type != 0){
+      if(userdata.DesireList != null){
+        if(userdata.DesireList.length == 0){
+          if(errorMsg.length != 0){
+            errorMsg = errorMsg + "、";
+          }
+          errorMsg = errorMsg + "願望";
+        }
+      }
+      else{
+        if(errorMsg.length != 0){
+          errorMsg = errorMsg + "、";
+        }
+        errorMsg = errorMsg + "願望";
+      }
+    }
+
+    if(errorMsg.length != 0){
+      errorMsg = errorMsg+"未填寫，請您重新確認";
+    }
+    return errorMsg;
+  }
+
+  //顯示錯誤訊息Dialog
+  Future<Null> showMsgDialog(String msg) async {
+    switch (await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("訊息"),
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new Text(msg),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('確定'),
+              onPressed: () {
+                Navigator.pop(context);
+              })
+        ],
+      ),
+    )) {
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +206,7 @@ class newUser extends State<newUserSetting> {
                     Expanded(
                       flex: 1,
                       child: new TextField(
-                        //controller: new TextEditingController(text: widget.msg1),
+                          controller: userNameEdit,
                           decoration: InputDecoration(
                             hintText: "請輸入姓名",
                             border: new UnderlineInputBorder(),
@@ -231,9 +335,10 @@ class newUser extends State<newUserSetting> {
                   ],
                 ),
               ),
+              desireEditWidgetClass.getdesireEditWidget(this, context, widget.type),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 8.0, top: 10.0, right: 8.0),
+                    left: 8.0, top: 20.0, right: 8.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -250,11 +355,45 @@ class newUser extends State<newUserSetting> {
                         textColor: Colors.white,
                         splashColor: Colors.black12,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => mainIndex("")),
-                          );
+
+                          String errorMsg = checkErrorMsg();
+                          if(errorMsg.length != 0){
+                            showMsgDialog(errorMsg);
+                          }
+                          else{
+
+                            preferencesclass.setString("userName", userNameEdit.text);
+                            preferencesclass.setInt("mYear", year);
+                            preferencesclass.setInt("mMonth", month);
+                            preferencesclass.setInt("mDay", day);
+                            preferencesclass.setBool("isYear", false);
+                            preferencesclass.setString("sex", selectedSystem.systemname);
+
+                            userdata.userName = userNameEdit.text;
+                            userdata.isYear =  false;
+                            userdata.mDay =  day;
+                            userdata.mMonth =  month;
+                            userdata.mYear =  year;
+                            userdata.Sex =  selectedSystem.systemname;
+                            userdata.uid = widget.uid;
+
+                            if(widget.type == 0){
+
+                              preferencesclass.setString("uid", "nologin84598349");
+
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  new MaterialPageRoute(builder: (context) => new mainIndex("")
+                                  ), (route) => route == null);
+                            }
+                            else{
+
+                              preferencesclass.setString("uid", widget.uid);
+                              userdata.setDesireListMap();
+
+                              print("USERDATA:"+userdata.toJson().toString());
+                              widget.itemRef.child(widget.uid).set(userdata.toJson());
+                            }
+                          }
                         },
                       ),
                     ),
@@ -266,6 +405,12 @@ class newUser extends State<newUserSetting> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    userdata.DesireList = null;
+    super.initState();
   }
 }
 

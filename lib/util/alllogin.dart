@@ -1,6 +1,8 @@
+import 'package:cactime/index.dart';
 import 'package:cactime/newUserSetting.dart';
 import 'package:cactime/util/progressdialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cactime/util/toast.dart';
 import 'package:flutter/material.dart';
@@ -29,15 +31,19 @@ class alllogin{
     ).catchError((error){
       RegExp exp = new RegExp(r'\d{5}');
       var err = exp.firstMatch(error.toString());
-      print(error);
-      print("@@@@@-"+err.group(0));
-
-      if (err.group(0) == '17011'){
-        toastclass.showToast("該帳號不存在，請您先註冊");
+      print(error.toString());
+      if(err != null){
+        if (err.group(0) == '17011'){
+          toastclass.showToast("該帳號不存在，請您先註冊");
+        }
+        else{
+          toastclass.showToast("E-mail寄送失敗");
+        }
       }
       else{
-        toastclass.showToast("E-mail寄送失敗");
+        toastclass.showToast("該帳號不存在，請您先註冊");
       }
+
     });
     Navigator.pop(context);
   }
@@ -59,31 +65,36 @@ class alllogin{
     ).catchError((error){
       RegExp exp = new RegExp(r'\d{5}');
       var err = exp.firstMatch(error.toString());
-      print(error);
-      print("@@@@@-"+err.group(0));
+      print(error.toString());
 
-      if (err.group(0) == '17008'){
-        toastclass.showToast("帳號格式錯誤");
-      }
-      else if (err.group(0) == '17009'){
-        toastclass.showToast("密碼錯誤");
-      }
-      else if (err.group(0) == '17011'){
-        toastclass.showToast("帳號錯誤");
-      }
-      else if (err.group(0) == '17026'){
-        toastclass.showToast("密碼長度必須為6個字元以上");
+      if(err != null){
+        if (err.group(0) == '17008'){
+          toastclass.showToast("帳號格式錯誤");
+        }
+        else if (err.group(0) == '17009'){
+          toastclass.showToast("密碼錯誤");
+        }
+        else if (err.group(0) == '17011'){
+          toastclass.showToast("帳號錯誤");
+        }
+        else if (err.group(0) == '17026'){
+          toastclass.showToast("密碼長度必須為6個字元以上");
+        }
+        else{
+          toastclass.showToast("請再次確認帳號以及密碼");
+        }
       }
       else{
-        toastclass.showToast("請再次確認帳號以及密碼");
+          toastclass.showToast("請再次確認帳號以及密碼");
       }
+
     });
 
     Navigator.pop(context);
   }
 
   //Firebase email登入
-  Future loginFirebase(BuildContext context, String email, String password) async {
+  Future loginFirebase(BuildContext context, String email, String password, Test test) async {
     await mAuth.signInWithEmailAndPassword(
         email: email,
         password: password
@@ -93,32 +104,41 @@ class alllogin{
           auth = value;
           print(auth);
           login = true;
+          test.loginType = 1;
+          test.test(auth.uid);
           toastclass.showToast("登入成功! uid = ${auth.uid}");
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => newUserSetting(auth.uid)),
-          );
+
         }
     ).catchError((error){
       Navigator.pop(context);
       RegExp exp = new RegExp(r'\d{5}');
       var err = exp.firstMatch(error.toString());
-      print(error);
-      print(err.group(0));
-
-      if (err.group(0) == '17011'){
-        showJoinCheckDialog(context, email, password);
-      }
-      else if (err.group(0) == '17008'){
-        toastclass.showToast("帳號格式錯誤");
-      }
-      else if (err.group(0) == '17009'){
-        toastclass.showToast("密碼錯誤");
+      print(error.toString());
+      if(err != null){
+        print(err.group(0));
+        if (err.group(0) == '17011'){
+          showJoinCheckDialog(context, email, password);
+        }
+        else if (err.group(0) == '17008'){
+          toastclass.showToast("帳號格式錯誤");
+        }
+        else if (err.group(0) == '17009'){
+          toastclass.showToast("密碼錯誤");
+        }
+        else{
+          toastclass.showToast("請再次確認帳號以及密碼");
+        }
       }
       else{
-        toastclass.showToast("請再次確認帳號以及密碼");
+        if(error.toString().indexOf("The password is invalid or the user does not have a password") != -1){
+          toastclass.showToast("密碼錯誤");
+        }
+        else{
+          showJoinCheckDialog(context, email, password);
+        }
       }
+
 
     });
 
@@ -194,7 +214,7 @@ class alllogin{
   }
 
   //Firebase facebook登入
-  Future<Null> logInFaceBook() async {
+  Future<Null> logInFaceBook(Test test) async {
     final FacebookLoginResult result =
     await facebookSignIn.logInWithReadPermissions(['email']);
     switch (result.status) {
@@ -205,26 +225,38 @@ class alllogin{
               print(auth);
               login = true;
               toastclass.showToast('''登入成功!uid = ${auth.uid}''');
-
+              test.loginType = 1;
+              test.test(auth.uid);
             }
         ).catchError((error){
           RegExp exp = new RegExp(r'\d{5}');
           var err = exp.firstMatch(error.toString());
-          print(error);
-          print("@@@@@@-"+err.group(0));
-          if (err.group(0) == '17011'){
-            toastclass.showToast("帳號錯誤");
-          }
-          else if (err.group(0) == '17009'){
-            toastclass.showToast("密碼錯誤");
-          }
-          else if(err.group(0) == '17012'){
-            toastclass.showToast("此帳號申請時不為FB登入");
+          print(error.toString());
+          if(err != null){
+            if (err.group(0) == '17011'){
+              toastclass.showToast("帳號錯誤");
+            }
+            else if (err.group(0) == '17009'){
+              toastclass.showToast("密碼錯誤");
+            }
+            else if(err.group(0) == '17012'){
+              toastclass.showToast("此帳號申請時不為FB登入");
+            }
+            else{
+              toastclass.showToast("請再次確認帳號以及密碼");
+            }
           }
           else{
-            toastclass.showToast("請再次確認帳號以及密碼");
+            if(error.toString().indexOf("The password is invalid or the user does not have a password") != -1){
+              toastclass.showToast("密碼錯誤");
+            }
+            else if(error.toString().indexOf("An account already exists with the same email address but different sign-in credentials.")!= -1){
+              toastclass.showToast("此帳號申請時不為FB登入");
+            }
+            else{
+              toastclass.showToast("請再次確認帳號以及密碼");
+            }
           }
-
         });
         break;
       case FacebookLoginStatus.cancelledByUser:
@@ -237,7 +269,7 @@ class alllogin{
   }
 
   //Firebase google登入
-  Future<Null> signInGoogle() async {
+  Future<Null> signInGoogle(Test test) async {
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
 
     if(googleSignInAccount != null){
@@ -245,9 +277,14 @@ class alllogin{
       if(authentication != null){
         FirebaseUser user = await mAuth.signInWithGoogle(idToken: authentication.idToken, accessToken: authentication.accessToken);
         toastclass.showToast("UID-"+user.uid);
+        print("UID-"+user.uid);
+        test.loginType = 1;
+        test.test(user.uid);
       }
     }
 
 
   }
+
+
 }

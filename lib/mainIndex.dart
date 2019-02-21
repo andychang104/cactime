@@ -1,10 +1,17 @@
+import 'package:cactime/database/database_helper.dart';
 import 'package:cactime/editDay.dart';
+import 'package:cactime/editMainDay.dart';
+import 'package:cactime/model/PastData.dart';
 import 'package:cactime/newDay.dart';
+import 'package:cactime/util/desireWidget.dart';
+import 'package:cactime/util/weekname.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:cactime/util/toast.dart';
+import 'package:cactime/model//userdata.dart' as userdata;
 
-List<String> pastData = ["結婚紀念日","第一次認識"];
-List<String> futureData = ["老婆生日","孩子生日","老媽生日","老爸生日"];
+
+int indexType = 0;
+int indexOneType = 0;
 
 class DrawerItem {
   String title;
@@ -14,15 +21,14 @@ class DrawerItem {
 }
 
 class Choice {
-  const Choice({this.title, this.icon});
+  const Choice({this.title, this.number});
 
   final String title;
-  final IconData icon;
+  final int number;
 }
 
 class mainIndex extends StatefulWidget {
   mainIndex(this.uid);
-
   final String title = "人生倒數計時器";
   final String uid;
 
@@ -31,69 +37,97 @@ class mainIndex extends StatefulWidget {
     new Tab(text: '未來'),
   ];
 
-  final drawerItems = [
-    new DrawerItem("個資宣告", Icons.announcement),
-    new DrawerItem("編輯願望", Icons.edit),
-    new DrawerItem("分享", Icons.share),
-    new DrawerItem("關於", Icons.clear_all),
-    new DrawerItem("會員登入", Icons.arrow_forward)
-  ];
-
   @override
   MainIndex createState() => MainIndex();
 }
 
 const List<Choice> choices = const <Choice>[
-  const Choice(title: "編輯人生倒數"),
-  const Choice(title: "編輯背景"),
-  const Choice(title: "編輯願望"),
+  const Choice(title: "編輯人生倒數", number: 0),
+  const Choice(title: "編輯背景", number: 1),
+  const Choice(title: "編輯願望", number: 2),
 ];
+
+
 class MainIndex extends State<mainIndex> {
+  var lifeDay = Text("",style: TextStyle(
+    fontSize: 60.0,
+    shadows: <Shadow>[
+      Shadow(
+        offset: Offset(5.0,5.0),
+        blurRadius: 5.0,
+        color: Color.fromARGB(255, 0, 0, 0),
+      ),
+    ],
+  ));
+  toast toastclass = new toast();
+  drawerWidget drawerwidget = new drawerWidget();
+  weekname weeknameclass = new weekname();
+  List<PastData> pastDataList = new  List<PastData>();
+  List<PastData> futureDataList = new  List<PastData>();
 
+  Choice selectedChoice = choices[0]; // The app's "state".
 
-
-  Choice _selectedChoice = choices[0]; // The app's "state".
-
+  //更多
   void _select(Choice choice) {
     // Causes the app to rebuild with the new _selectedChoice.
     setState(() {
-      _selectedChoice = choice;
+      selectedChoice = choice;
+      if(selectedChoice.number == 0){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EditMainDay()),
+        );
+      }
     });
   }
 
-
-  int selectedDrawerIndex = 0;
-
-  onSelectItem(int index) {
+  //載入時間資料
+  void setData(BuildContext context){
     setState(() {
-      selectedDrawerIndex = index;
-
-      if (selectedDrawerIndex == 2) {
-        Share.share(
-            'https://play.google.com/store/apps/details?id=cactime.com.cactime');
+      if(indexType == 0){
+        DatabaseHelper dbHelperPastData = new DatabaseHelper();
+        dbHelperPastData.getPastData(this, context);
+        indexType = 1;
       }
     });
-    Navigator.of(context).pop(); // close the drawer
+  }
+
+  //塞入目前壽命
+  void setLifeDay(String difference){
+    setState(() {
+      lifeDay = Text(difference, style: TextStyle(
+        fontSize: 60.0,
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(5.0,5.0),
+            blurRadius: 5.0,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+        ],
+      ));
+    });
+  }
+
+  String checkDay(int type, PastData pastData){
+    DateTime dbDay = new DateTime.utc(pastData.itemYear, pastData.itemMonth, pastData.itemDay);
+    DateTime date2 = DateTime.now();
+    String day = "";
+    if(type == 0){
+      day = date2.difference(dbDay).inDays.toString();
+    }
+    else{
+      day = dbDay.difference(date2).inDays.toString();
+    }
+    return day;
   }
 
   @override
   Widget build(BuildContext context) {
-    var drawerOptions = <Widget>[];
-    for (var i = 0; i < widget.drawerItems.length; i++) {
-      var d = widget.drawerItems[i];
-      drawerOptions.add(new ListTile(
-        leading: new Icon(d.icon),
-        title: new Text(d.title),
-        selected: i == selectedDrawerIndex,
-        onTap: () => onSelectItem(i),
-      ));
-    }
-
+    setData(context);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.deepPurple,
         title: new Text(widget.title),
-
           actions: <Widget>[
       // action button
             PopupMenuButton<Choice>(
@@ -111,20 +145,7 @@ class MainIndex extends State<mainIndex> {
   ]
 
       ),
-
-      drawer: new Drawer(
-        child: new Column(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text("張世明"),
-              accountEmail: new Text("男"),
-              currentAccountPicture: new CircleAvatar(
-                  backgroundImage: AssetImage('images/ic_launcher_140.png')),
-            ),
-            new Column(children: drawerOptions)
-          ],
-        ),
-      ), //侧边栏按钮Drawer
+      drawer: drawerwidget.getDrawerWidget(context, userdata.userName), //侧边栏按钮Drawer
       body: new DefaultTabController(
         length: widget.myTabs.length,
         child: new Column(
@@ -134,21 +155,27 @@ class MainIndex extends State<mainIndex> {
               children: [
                 Expanded(
                     flex: 1,
-                    child: new Material(
-                      color: Colors.black26,
-                      child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 40.0, bottom: 40.0),
-                          child: new Text(
-                            "50000天",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 60.0,
-                              color: Colors.black,
-                            ),
-                          )),
-                    )),
+                    child: Stack(
+                      alignment: FractionalOffset.center,
+                      children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Image.asset(
+                                  'images/bg_private.jpg',
+                                  height: 170.0, fit: BoxFit.cover),
+                            ]),
+                        new Align(
+                            alignment: FractionalOffset.center,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  lifeDay,
+                                ])),
+                      ],
+                    ),
+                ),
               ],
             ),
 
@@ -156,6 +183,7 @@ class MainIndex extends State<mainIndex> {
               children: <Widget>[
                 new TabBar(
                   tabs: widget.myTabs,
+                  indicatorColor: const Color(0xFFff7800),
                   indicatorSize: TabBarIndicatorSize.tab,
                   labelColor: Colors.deepPurple,
                   labelStyle: new TextStyle(fontSize: 16.0),
@@ -176,29 +204,36 @@ class MainIndex extends State<mainIndex> {
                 children: [
                   Scaffold(floatingActionButton: new FloatingActionButton(
                       elevation: 0.0,
+                      backgroundColor: const Color(0xFFff7800),
                       child: new Icon(Icons.add),
-                      onPressed: (){               Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NewDay(0)),
-                      );}
+                      onPressed: (){
+                        Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+                          return new NewDay(0);
+                        })).then((String result){
+                          if(result != null){
+                            indexType = 0;
+                            setData(context);
+                          }
+                        });
+                      }
                   ),
                   body: ListView.separated(
-                    itemCount: pastData.length,
-                    separatorBuilder: (BuildContext context, int index) => Divider(),
+                    itemCount: pastDataList.length,
+                    separatorBuilder: (BuildContext context, int index) => Divider(height:0, color: Colors.black),
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                         dense: false,
                         leading: null,//左侧首字母图标显示，不显示则传null
-                        title: new Text(pastData[index], style: TextStyle(
+                        title: new Text(pastDataList[index].itemName, style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text("目標日：12月 4,2018(週二)", style: TextStyle(
+                        subtitle: new Text("目標日："+pastDataList[index].itemMonth.toString()+"月 "+pastDataList[index].itemDay.toString()+","+pastDataList[index].itemYear.toString()+weeknameclass.getWeekName(pastDataList[index].itemWeekDay-1), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容
                         trailing: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.end,
-                            children: [new Text("過20天", style: TextStyle(
+                            children: [new Text("過"+checkDay(0, pastDataList[index])+"天", style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                               color: Colors.black,
@@ -213,29 +248,36 @@ class MainIndex extends State<mainIndex> {
                     },
                   )),
                   Scaffold(floatingActionButton: new FloatingActionButton(
+                      backgroundColor: const Color(0xFFff7800),
                       elevation: 0.0,
                       child: new Icon(Icons.add),
-                      onPressed: (){               Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NewDay(1)),
-                      );}
+                      onPressed: (){
+                        Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+                          return new NewDay(1);
+                        })).then((String result){
+                          if(result != null){
+                            indexType = 0;
+                            setData(context);
+                          }
+                        });
+                      }
                   ), body: ListView.separated(
-                    itemCount: futureData.length,
-                    separatorBuilder: (BuildContext context, int index) => Divider(),
+                    itemCount: futureDataList.length,
+                    separatorBuilder: (BuildContext context, int index) => Divider(height:0, color: Colors.black),
                     itemBuilder: (BuildContext context, int index) {
                       return ListTile(
                         dense: false,
                         leading: null,//左侧首字母图标显示，不显示则传null
-                        title: new Text(futureData[index], style: TextStyle(
+                        title: new Text(futureDataList[index].itemName, style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text("目標日：12月 4,2018(週二)", style: TextStyle(
+                        subtitle: new Text("目標日："+futureDataList[index].itemMonth.toString()+"月 "+futureDataList[index].itemDay.toString()+","+futureDataList[index].itemYear.toString()+weeknameclass.getWeekName(futureDataList[index].itemWeekDay-1), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容
                         trailing: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.end,
-                            children: [new Text("剩21天", style: TextStyle(
+                            children: [new Text("剩"+checkDay(1, futureDataList[index])+"天", style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                               color: Colors.black,
@@ -261,5 +303,27 @@ class MainIndex extends State<mainIndex> {
     );
   }
 
+  @override
+  void initState() {
+    int deathYesr = 76;
+    if(userdata.Sex == "男"){
+      deathYesr = 76;
+    }
+    else if(userdata.Sex == "女"){
+      deathYesr = 81;
+    }
+
+    int allDeathYesr = deathYesr + userdata.mYear;
+
+    DateTime selectedDate = new DateTime.utc(allDeathYesr, userdata.mMonth, userdata.mDay);
+    DateTime date = DateTime.now();
+    
+    String difference = selectedDate.difference(date).inDays.toString();
+    toastclass.showToast(difference);
+    setLifeDay(difference);
+    super.initState();
+  }
 
 }
+
+
