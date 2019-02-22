@@ -151,6 +151,16 @@ class newDay extends State<NewDay> {
     }
   }
 
+  String getPlshMsg(String msg, int type){
+    if(type == 0){
+      msg += "又過了1天，快來看看過了多少天吧！";
+    }
+    else{
+      msg += "又過了1天，快來看看剩餘多少天吧！";
+    }
+    return msg;
+  }
+
   @override
   void initState() {
     dayNameEdit = TextEditingController(text: "");
@@ -167,24 +177,19 @@ class newDay extends State<NewDay> {
     }
   }
 
-  showNotification() async{
-//    var android = new AndroidNotificationDetails('channel id', 'channel NAME', 'CHANNEL DESCRIPTION');
-//    var iOS = new IOSNotificationDetails();
-//    var platform = new NotificationDetails(android, iOS);
-//    await flutterLocalNotificationsPlugin.show(0, 'title', 'body', platform);
-
-    var time = new Time(18, 29, 0);
+  showNotification(String msg, int id, int type) async{
+    var time = new Time(8, 0, 0);
     var androidPlatformChannelSpecifics =
-    new AndroidNotificationDetails('repeatDailyAtTime channel id',
-        'repeatDailyAtTime channel name', 'repeatDailyAtTime description');
+    new AndroidNotificationDetails('channel id',
+        'Death Day', 'description');
     var iOSPlatformChannelSpecifics =
     new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
-        0,
+        id,
         'show daily title',
-        'test',
+        getPlshMsg(msg, type),
         time,
         platformChannelSpecifics);
   }
@@ -350,27 +355,29 @@ class newDay extends State<NewDay> {
                           }
                           else{
                             DateTime date2 = DateTime.now();
-
+                            String time = date2.hour.toString() + date2.minute.toString() + date2.second.toString();
                             String difference = "";
                             String tableName = "";
                             if(widget.type == 0){
                               tableName = "pastData";
                               difference = date2.difference(selectedDate).inDays.toString();
+
                             }
                             else{
                               tableName = "futureData";
                               difference = selectedDate.difference(date2).inDays.toString();
                             }
 
+                            showNotification(dayNameEdit.text, int.parse(time), widget.type);
+
                             var dbHelper = DatabaseHelper();
                             PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday);
-
-                            DateTime id = DateTime.now();
-                            pastData.setUserId(id.millisecondsSinceEpoch.toString());
+                            pastData.setUserId(date2.millisecondsSinceEpoch.toString());
                             dbHelper.savePastData(pastData,  tableName);;
                             Navigator.pop(context, tableName);
 
-                            showNotification();
+                            print(time);
+                            //showNotification();
                           }
                         },
                       ),
