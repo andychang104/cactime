@@ -4,6 +4,7 @@ import 'package:cactime/editMainDay.dart';
 import 'package:cactime/model/PastData.dart';
 import 'package:cactime/newDay.dart';
 import 'package:cactime/util/desireWidget.dart';
+import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/weekname.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/util/toast.dart';
@@ -12,6 +13,8 @@ import 'package:cactime/model//userdata.dart' as userdata;
 
 int indexType = 0;
 int indexOneType = 0;
+notification notificationclass = new notification();
+
 
 class DrawerItem {
   String title;
@@ -319,8 +322,14 @@ class MainIndex extends State<mainIndex> {
     DateTime date = DateTime.now();
     
     String difference = selectedDate.difference(date).inDays.toString();
+
+
+    if(selectedDate.difference(date).inDays <=0){
+      notificationclass.deleteNotification(49522011);
+      difference = "0";
+    }
     toastclass.showToast(difference);
-    setLifeDay(difference);
+    setLifeDay(difference+"天");
     super.initState();
   }
 

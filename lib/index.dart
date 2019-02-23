@@ -6,6 +6,7 @@ import 'package:cactime/model/userdata.dart';
 import 'package:cactime/newUserSetting.dart';
 import 'package:cactime/util/alllogin.dart';
 import 'package:cactime/util/desire.dart';
+import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/progressdialog.dart';
 import 'package:cactime/util/toast.dart';
@@ -23,6 +24,7 @@ import 'package:cactime/desireList.dart';
 
 preferences preferencesclass = new preferences();
 toast toastclass = new toast();
+notification notificationclass = new notification();
 List<String> selectedCities = [];
 alllogin loginclass = new alllogin();
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -145,6 +147,8 @@ class Test extends State<Index> {
 
           Navigator.pop(context);
           Navigator.pop(context);
+
+          notificationclass.showNotification(userName+"您的壽命", 49522011, 99);
 
           Navigator.push(
             context,
@@ -414,6 +418,7 @@ class Test extends State<Index> {
 
   @override
   void initState() {
+    notificationclass.setNotificationsPlugin();
     _prefs.then((SharedPreferences prefs) {
       isEmailCheck = prefs.getBool('isEmailCheck');
       if(isEmailCheck == null){

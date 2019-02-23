@@ -1,15 +1,16 @@
 import 'package:cactime/database/database_helper.dart';
 import 'package:cactime/model/PastData.dart';
+import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 List<String> dayNameList =  new List<String>();
 List<String> dayNumberList =  new List<String>();
 toast toastclass = new toast();
+notification notificationclass = new notification();
 preferences preferencesclass = new preferences();
 var newDayText = new RichText(text: new TextSpan(text: ""));
 var dayNameEdit = TextEditingController(text: "");
@@ -25,7 +26,6 @@ class NewDay extends StatefulWidget {
 }
 
 class newDay extends State<NewDay> {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   bool valueTop = false;
   bool valuePush = false;
 
@@ -151,48 +151,13 @@ class newDay extends State<NewDay> {
     }
   }
 
-  String getPlshMsg(String msg, int type){
-    if(type == 0){
-      msg += "又過了1天，快來看看過了多少天吧！";
-    }
-    else{
-      msg += "又過了1天，快來看看剩餘多少天吧！";
-    }
-    return msg;
-  }
 
   @override
   void initState() {
-    dayNameEdit = TextEditingController(text: "");
-    var initializationSettingsAndroid = new AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(initializationSettingsAndroid, initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
+    notificationclass.setNotificationsPlugin();
     super.initState();
   }
 
-  Future onSelectNotification(String payload)  {
-    if (payload != null) {
-      toastclass.showToast("測試");
-    }
-  }
-
-  showNotification(String msg, int id, int type) async{
-    var time = new Time(8, 0, 0);
-    var androidPlatformChannelSpecifics =
-    new AndroidNotificationDetails('channel id',
-        'Death Day', 'description');
-    var iOSPlatformChannelSpecifics =
-    new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-        id,
-        'show daily title',
-        getPlshMsg(msg, type),
-        time,
-        platformChannelSpecifics);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +320,7 @@ class newDay extends State<NewDay> {
                           }
                           else{
                             DateTime date2 = DateTime.now();
-                            String time = date2.hour.toString() + date2.minute.toString() + date2.second.toString();
+                            String time =  date2.month.toString() + date2.day.toString() + date2.hour.toString() + date2.minute.toString() + date2.second.toString();
                             String difference = "";
                             String tableName = "";
                             if(widget.type == 0){
@@ -368,16 +333,14 @@ class newDay extends State<NewDay> {
                               difference = selectedDate.difference(date2).inDays.toString();
                             }
 
-                            showNotification(dayNameEdit.text, int.parse(time), widget.type);
+                            notificationclass.showNotification(dayNameEdit.text, int.parse(time), widget.type);
 
                             var dbHelper = DatabaseHelper();
                             PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday);
-                            pastData.setUserId(date2.millisecondsSinceEpoch.toString());
-                            dbHelper.savePastData(pastData,  tableName);;
+                            pastData.setUserId(int.parse(time).toString());
+                            dbHelper.savePastData(pastData,  tableName);
                             Navigator.pop(context, tableName);
-
                             print(time);
-                            //showNotification();
                           }
                         },
                       ),

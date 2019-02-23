@@ -1,8 +1,10 @@
 import 'package:cactime/mainIndex.dart';
-import 'package:cactime/util/localdata.dart';
+import 'package:cactil/localdata.dart';
+import 'package:cactime/util/system.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:cactime/model//userdata.dart' as userdata;
 
 localdata localdataclass = new localdata();
 
@@ -14,26 +16,20 @@ class EditMainDay extends StatefulWidget {
 }
 
 class editMainDay extends State<EditMainDay> {
-
-  bool valueTop = false;
+  bool isCheck = false;
+  System selectedSystem;
   bool valuePush = false;
-
-  void onChangedTop(bool value){
-    setState(() {
-      valueTop = value;
-    });
-  }
-
+  List<System> systemList = localdataclass.getSystemList();
   void onChangedPush(bool value){
     setState(() {
       valuePush = value;
     });
   }
 
-  var dayTextColor = Colors.black54;
+  var dayTextColor = Colors.black;
 
   DateTime selectedDate = DateTime.now();
-  String newDayText = "請選擇倒數日期";
+  String newDayText = "請選擇生日";
   int year = 2008;
   int month = 12;
   int day = 31;
@@ -68,6 +64,11 @@ class editMainDay extends State<EditMainDay> {
     }, currentTime: DateTime(year, month, day), locale: LocaleType.zh);
   }
 
+  void onChanged(bool value) {
+    setState(() {
+      isCheck = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "事件：",
+                      "姓名：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -97,9 +98,9 @@ class editMainDay extends State<EditMainDay> {
                     Expanded(
                       flex: 1,
                       child: new TextField(
-                        //controller: new TextEditingController(text: widget.msg1),
+                          controller: new TextEditingController(text: userdata.userName),
                           decoration: InputDecoration(
-                            hintText: "請輸入倒數事件名稱",
+                            hintText: "請輸入姓名",
                             border: new UnderlineInputBorder(),
                           ),
                           style: TextStyle(
@@ -116,7 +117,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "日期：",
+                      "生日：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -128,7 +129,7 @@ class editMainDay extends State<EditMainDay> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: widget.newDayText = new RichText(
                           text: new TextSpan(
-                              text: newDayText,
+                              text: userdata.mYear.toString()+"/"+userdata.mMonth.toString()+"/"+userdata.mDay.toString(),
                               style: new TextStyle(
                                 fontSize: 16.0,
                                 color: dayTextColor,
@@ -155,7 +156,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "置頂：",
+                      "性別：",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -165,10 +166,32 @@ class editMainDay extends State<EditMainDay> {
                       flex: 1,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: new Text(""),
+                        child: new DropdownButton<System>(
+                          hint: new Text("請選擇性別",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              )),
+                          value: selectedSystem,
+                          onChanged: (System newValue) {
+                            setState(() {
+                              selectedSystem = newValue;
+                            });
+                          },
+                          items: systemList.map((System system) {
+                            return new DropdownMenuItem<System>(
+                              value: system,
+                              child: new Text(
+                                system.systemname,
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
-                    new Switch(value: valueTop, onChanged: (bool value) {onChangedTop(value); },),
                   ],
                 ),
               ),
@@ -178,7 +201,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "通知：",
+                      "通知：(每日1次 8:00)",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -192,6 +215,39 @@ class editMainDay extends State<EditMainDay> {
                       ),
                     ),
                     new Switch(value: valuePush, onChanged: (bool value) {onChangedPush(value); },),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0, right: 8.0),
+                child: Row(
+                  children: [
+                    new Checkbox(value: isCheck, onChanged: (bool value) {
+                      //_isEmailCheck = value;
+                      onChanged(value);
+                    }, activeColor: Colors.deepPurple,),
+                    Expanded(
+                      flex: 1,
+                      child: new RichText(
+                        text: new TextSpan(
+                            text: "是否有抽菸習慣",
+                            style: new TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {
+                                if (isCheck) {
+                                  onChanged(false);
+                                }
+                                else {
+                                  onChanged(true);
+                                }
+                              }),
+                      ),
+                    ),
+
                   ],
                 ),
               ),
@@ -230,6 +286,12 @@ class editMainDay extends State<EditMainDay> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    selectedDate = new DateTime.utc(userdata.mYear, userdata.mMonth, userdata.mDay);
+    super.initState();
   }
 }
 

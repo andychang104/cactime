@@ -1,6 +1,7 @@
 import 'package:cactime/mainIndex.dart';
 import 'package:cactime/util/desireEditWidget.dart';
 import 'package:cactime/util/localdata.dart';
+import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/system.dart';
 import 'package:cactime/util/toast.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
 localdata localdataclass = new localdata();
+notification notificationclass = new notification();
 desireEditWidget desireEditWidgetClass = new desireEditWidget();
 preferences preferencesclass = new preferences();
 var userNameEdit = TextEditingController(text: "");
@@ -53,7 +55,7 @@ class newUser extends State<newUserSetting> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1000, 1),
-        lastDate: DateTime(5000));
+        lastDate: DateTime.now());
     if (picked != null)
       setState(() {
         selectedDate = picked;
@@ -66,7 +68,7 @@ class newUser extends State<newUserSetting> {
   }
 
   Future<Null> iosSelectDate(BuildContext context) async {
-    DatePicker.showDatePicker(context, showTitleActions: true, onChanged: (date) {
+    DatePicker.showDatePicker(context, showTitleActions: true, maxTime: DateTime.now() ,onChanged: (date) {
     }, onConfirm: (date) {
       setState(() {
         selectedDate = date;
@@ -380,6 +382,7 @@ class newUser extends State<newUserSetting> {
                             if(widget.type == 0){
 
                               preferencesclass.setString("uid", "nologin84598349");
+                              notificationclass.showNotification(userNameEdit.text+"您的壽命", 49522011, 99);
 
                               Navigator.of(context).pushAndRemoveUntil(
                                   new MaterialPageRoute(builder: (context) => new mainIndex("")
@@ -409,6 +412,7 @@ class newUser extends State<newUserSetting> {
 
   @override
   void initState() {
+    notificationclass.setNotificationsPlugin();
     userdata.DesireList = null;
     super.initState();
   }
