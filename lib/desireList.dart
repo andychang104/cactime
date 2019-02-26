@@ -12,6 +12,16 @@ class DesireListActivity extends StatefulWidget {
 }
 
 class desireList extends State<DesireListActivity> {
+  var desireAddEdit = TextEditingController(text: "");
+
+
+  //重新整理夢想列表
+  void desireReset(){
+    setState(() {
+      widget.cities =  userdata.allDesireList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +33,7 @@ class desireList extends State<DesireListActivity> {
               icon: Icon(Icons.add),
               color: Colors.white,
               onPressed: () {
-                
+                showDesireDialog();
               },
             )
             ]
@@ -117,6 +127,45 @@ class desireList extends State<DesireListActivity> {
         ),
       ),
     );
+  }
+
+
+  //顯示輸入願望視窗
+  Future<Null> showDesireDialog() async {
+    switch (await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("新增願望"),
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextFormField(
+                controller: desireAddEdit,
+                autofocus: true,
+                decoration: new InputDecoration(hintText: '請輸入您的願望'),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('取消'),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          new FlatButton(
+              child: const Text('確定'),
+              onPressed: () {
+                userdata.allDesireList.add(desireAddEdit.text);
+                desireReset();
+//                callapiclass.getLogin(passwordEdit.text, type, context);
+                Navigator.pop(context);
+              })
+        ],
+      ),
+    )) {
+    }
   }
 
   @override

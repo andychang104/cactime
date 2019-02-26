@@ -1,5 +1,6 @@
 import 'package:cactime/mainIndex.dart';
-import 'package:cactil/localdata.dart';
+import 'package:cactime/util/localdata.dart';
+import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/system.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
 localdata localdataclass = new localdata();
+preferences preferencesclass = new preferences();
+var userNameEdit = TextEditingController(text: "");
+
 
 class EditMainDay extends StatefulWidget {
   String title = "編輯個人資料";
@@ -29,7 +33,7 @@ class editMainDay extends State<EditMainDay> {
   var dayTextColor = Colors.black;
 
   DateTime selectedDate = DateTime.now();
-  String newDayText = "請選擇生日";
+  String birthday = "請選擇生日";
   int year = 2008;
   int month = 12;
   int day = 31;
@@ -43,7 +47,10 @@ class editMainDay extends State<EditMainDay> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        newDayText =
+        year = selectedDate.year;
+        month = selectedDate.month;
+        day = selectedDate.day;
+        birthday =
             selectedDate.year.toString() + "/" + selectedDate.month.toString() +
                 "/" + selectedDate.day.toString();
         dayTextColor = Colors.black;
@@ -58,7 +65,7 @@ class editMainDay extends State<EditMainDay> {
         year = selectedDate.year;
         month = selectedDate.month;
         day = selectedDate.day;
-        newDayText = selectedDate.year.toString() + "/" + selectedDate.month.toString() + "/" + selectedDate.day.toString();
+        birthday = selectedDate.year.toString() + "/" + selectedDate.month.toString() + "/" + selectedDate.day.toString();
         dayTextColor = Colors.black;
       });
     }, currentTime: DateTime(year, month, day), locale: LocaleType.zh);
@@ -98,7 +105,7 @@ class editMainDay extends State<EditMainDay> {
                     Expanded(
                       flex: 1,
                       child: new TextField(
-                          controller: new TextEditingController(text: userdata.userName),
+                          controller: userNameEdit,
                           decoration: InputDecoration(
                             hintText: "請輸入姓名",
                             border: new UnderlineInputBorder(),
@@ -129,7 +136,7 @@ class editMainDay extends State<EditMainDay> {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: widget.newDayText = new RichText(
                           text: new TextSpan(
-                              text: userdata.mYear.toString()+"/"+userdata.mMonth.toString()+"/"+userdata.mDay.toString(),
+                              text: birthday,
                               style: new TextStyle(
                                 fontSize: 16.0,
                                 color: dayTextColor,
@@ -270,11 +277,29 @@ class editMainDay extends State<EditMainDay> {
                         textColor: Colors.white,
                         splashColor: Colors.black12,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => mainIndex("")),
-                          );
+
+                          preferencesclass.setString("userName", userNameEdit.text);
+                          preferencesclass.setInt("mYear", year);
+                          preferencesclass.setInt("mMonth", month);
+                          preferencesclass.setInt("mDay", day);
+                          preferencesclass.setString("sex", selectedSystem.systemname);
+                          preferencesclass.setBool("isSmoking", isCheck);
+                          preferencesclass.setBool("isMainPush", valuePush);
+
+                          userdata.userName = userNameEdit.text;
+                          userdata.mDay =  day;
+                          userdata.mMonth =  month;
+                          userdata.mYear =  year;
+                          userdata.Sex =  selectedSystem.systemname;
+                          userdata.isSmoking = isCheck;
+                          userdata.isMainPush = valuePush;
+
+                          Navigator.pop(context, "ok");
+//                          Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) => mainIndex("")),
+//                          );
                         },
                       ),
                     ),
@@ -290,7 +315,25 @@ class editMainDay extends State<EditMainDay> {
 
   @override
   void initState() {
-    selectedDate = new DateTime.utc(userdata.mYear, userdata.mMonth, userdata.mDay);
+    if(userdata.isMainPush !=null){
+      valuePush = userdata.isMainPush;
+    }
+    if(userdata.isSmoking != null){
+      isCheck = userdata.isSmoking;
+    }
+
+    userNameEdit = TextEditingController(text: userdata.userName);
+    if(userdata.Sex == "男"){
+      selectedSystem=systemList[0];
+    }
+    else {
+      selectedSystem=systemList[1];
+    }
+    selectedDate = new DateTime(userdata.mYear, userdata.mMonth, userdata.mDay);
+    year = userdata.mYear;
+    month = userdata.mMonth;
+    day = userdata.mDay;
+    birthday = userdata.mYear.toString()+"/"+userdata.mMonth.toString()+"/"+userdata.mDay.toString();
     super.initState();
   }
 }

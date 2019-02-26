@@ -1,14 +1,20 @@
+import 'package:cactime/database/database_helper.dart';
 import 'package:cactime/mainIndex.dart';
+import 'package:cactime/model/PastData.dart';
 import 'package:cactime/util/localdata.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+
 localdata localdataclass = new localdata();
+var dayNameEdit = TextEditingController(text: "");
+
 
 class EditDay extends StatefulWidget {
-  EditDay(this.type);
+  EditDay(this.type, this.pastData);
   String title = "";
+  PastData pastData;
   final int type;
   RichText newDayText = new RichText(text: new TextSpan(text: ""));
   @override
@@ -32,7 +38,7 @@ class editDay extends State<EditDay> {
     });
   }
 
-  var dayTextColor = Colors.black54;
+  var dayTextColor = Colors.black;
 
   DateTime selectedDate = DateTime.now();
   String newDayText = "請選擇倒數日期";
@@ -49,6 +55,9 @@ class editDay extends State<EditDay> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
+        year = selectedDate.year;
+        month = selectedDate.month;
+        day = selectedDate.day;
         newDayText =
             selectedDate.year.toString() + "/" + selectedDate.month.toString() +
                 "/" + selectedDate.day.toString();
@@ -70,6 +79,51 @@ class editDay extends State<EditDay> {
     }, currentTime: DateTime(year, month, day), locale: LocaleType.zh);
   }
 
+  //錯誤訊息確認
+  String checkErrorMsg() {
+    String errorMsg = "";
+    if(dayNameEdit.text.length == 0){
+      errorMsg = "事件";
+    }
+    if(newDayText == "請選擇倒數日期"){
+      if(errorMsg.length != 0){
+        errorMsg = errorMsg + "、";
+      }
+      errorMsg = errorMsg + "倒數日期";
+    }
+
+    if(errorMsg.length != 0){
+      errorMsg = errorMsg+"未填寫，請您重新確認";
+    }
+    return errorMsg;
+  }
+
+  //顯示錯誤訊息Dialog
+  Future<Null> showMsgDialog(String msg) async {
+    switch (await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("訊息"),
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new Text(msg),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('確定'),
+              onPressed: () {
+                Navigator.pop(context);
+              })
+        ],
+      ),
+    )) {
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +140,23 @@ class editDay extends State<EditDay> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: Text(widget.title),
+          actions: <Widget>[
+            // action button
+            IconButton(
+      icon: Icon(Icons.delete),
+      onPressed: () {
+        String tableName = "";
+        if(widget.type == 0){
+          tableName = "pastData";
+        }
+        else{
+          tableName = "futureData";
+        }
+        var dbHelper = DatabaseHelper();
+        dbHelper.deletePastData( widget.pastData,  tableName);
+        Navigator.pop(context, tableName);
+      },
+    ),]
       ),
       body: new Container(
         margin: const EdgeInsets.all(4.0),
@@ -107,7 +178,7 @@ class editDay extends State<EditDay> {
                     Expanded(
                       flex: 1,
                       child: new TextField(
-                        //controller: new TextEditingController(text: widget.msg1),
+                        controller: dayNameEdit,
                           decoration: InputDecoration(
                             hintText: "請輸入倒數事件名稱",
                             border: new UnderlineInputBorder(),
@@ -224,11 +295,39 @@ class editDay extends State<EditDay> {
                         textColor: Colors.white,
                         splashColor: Colors.black12,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => mainIndex("")),
-                          );
+                          String errorMsg = checkErrorMsg();
+
+                          if(errorMsg.length != 0){
+                            showMsgDialog(errorMsg);
+                          }
+                          else{
+                            DateTime date2 = DateTime.now();
+                            String time =  date2.month.toString() + date2.day.toString() + date2.hour.toString() + date2.minute.toString() + date2.second.toString();
+                            String difference = "";
+                            String tableName = "";
+                            if(widget.type == 0){
+                              tableName = "pastData";
+                              difference = date2.difference(selectedDate).inDays.toString();
+
+                            }
+                            else{
+                              tableName = "futureData";
+                              difference = selectedDate.difference(date2).inDays.toString();
+                            }
+
+                            notificationclass.showNotification(dayNameEdit.text, int.parse(widget.pastData.id), widget.type);
+
+                            var dbHelper = DatabaseHelper();
+                            PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday, widget.pastData.id);
+                            dbHelper.update(pastData,  tableName);
+                            Navigator.pop(context, tableName);
+                            print(time);
+                          }
+//                          Navigator.push(
+//                            context,
+//                            MaterialPageRoute(
+//                                builder: (context) => mainIndex("")),
+//                          );
                         },
                       ),
                     ),
@@ -240,6 +339,23 @@ class editDay extends State<EditDay> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    dayNameEdit = TextEditingController(text: widget.pastData.itemName);
+    year = widget.pastData.itemYear;
+    month = widget.pastData.itemMonth;
+    day = widget.pastData.itemDay;
+    selectedDate = new DateTime(year, month, day);
+    newDayText = year.toString() +"/" +month.toString() +"/"+day.toString();
+    if(widget.pastData.itemIsTop == "true"){
+      valueTop = true;
+    }
+    if(widget.pastData.itemIsPush == "true"){
+      valuePush = true;
+    }
+    super.initState();
   }
 }
 

@@ -1,6 +1,6 @@
 class PastData {
 
-  String id;
+  String _id;
   String _itemName;
   int _itemYear;
   int _itemMonth;
@@ -11,7 +11,7 @@ class PastData {
   int _itemWeekDay;
 
 
-  PastData(this._itemName, this._itemYear, this._itemMonth,  this._itemDay, this._itemIsTop, this._itemIsPush, this._itemAllDay, this._itemWeekDay);
+  PastData(this._itemName, this._itemYear, this._itemMonth,  this._itemDay, this._itemIsTop, this._itemIsPush, this._itemAllDay, this._itemWeekDay, this._id);
 
   PastData.map(dynamic obj) {
     this._itemName = obj["itemName"];
@@ -22,6 +22,7 @@ class PastData {
     this._itemIsPush = obj["itemIsPush"];
     this._itemAllDay = obj["itemAllDay"];
     this._itemWeekDay = obj["itemWeekDay"];
+    this._id = obj["_id"];
   }
 
   String get itemName => _itemName;
@@ -32,6 +33,7 @@ class PastData {
   String get itemIsPush => _itemIsPush;
   String get itemAllDay => _itemAllDay;
   int get itemWeekDay => _itemWeekDay;
+  String get id => _id;
 
 
   Map<String, dynamic> toMap() {
@@ -44,9 +46,10 @@ class PastData {
     map["itemIsPush"] = _itemIsPush;
     map["itemAllDay"] = _itemAllDay;
     map["itemWeekDay"] = _itemWeekDay;
+    map["id"] = _id;
     return map;
   }
-  void setUserId(String id) {
-    this.id = id;
-  }
+//  void setUserId(String id) {
+//    this._id = id;
+//  }
 }

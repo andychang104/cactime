@@ -21,6 +21,9 @@ int mDay;
 String userName;
 String Sex;
 bool isYear;
+bool isSmoking;
+bool isMainPush;
+
 List<desire> DesireList;
 List<Map> desireListMap;
 List<String> allDesireList;
@@ -35,6 +38,7 @@ toJson(){
     "userName":userName,
     "sex":Sex,
     "isYear":isYear,
+    "isSmoking":isSmoking,
     "desireList": desireListMap
   };
 }

@@ -51,8 +51,7 @@ class DatabaseHelper {
     List<Map> pastDatalist = await dbClient.rawQuery('SELECT * FROM pastData');
     List<PastData> employees1 = new List();
     for (int i = 0; i < pastDatalist.length; i++) {
-      var pastData = new PastData(pastDatalist[i]["itemName"], pastDatalist[i]["itemYear"], pastDatalist[i]["itemMonth"], pastDatalist[i]["itemDay"], pastDatalist[i]["itemIsTop"],  pastDatalist[i]["itemIsPush"], pastDatalist[i]["itemAllDay"], pastDatalist[i]["itemWeekDay"]);
-      pastData.setUserId(pastDatalist[i]["id"]);
+      var pastData = new PastData(pastDatalist[i]["itemName"], pastDatalist[i]["itemYear"], pastDatalist[i]["itemMonth"], pastDatalist[i]["itemDay"], pastDatalist[i]["itemIsTop"],  pastDatalist[i]["itemIsPush"], pastDatalist[i]["itemAllDay"], pastDatalist[i]["itemWeekDay"], pastDatalist[i]["id"]);
 
       if(pastData.itemIsTop.indexOf("true") != -1){
         employees1.insert(0,pastData);
@@ -67,8 +66,7 @@ class DatabaseHelper {
     List<Map> futureDatalist = await dbClient.rawQuery("SELECT * FROM futureData");
     List<PastData> employees2 = new List();
     for (int i = 0; i < futureDatalist.length; i++) {
-      var pastData = new PastData(futureDatalist[i]["itemName"], futureDatalist[i]["itemYear"], futureDatalist[i]["itemMonth"], futureDatalist[i]["itemDay"], futureDatalist[i]["itemIsTop"],  futureDatalist[i]["itemIsPush"], futureDatalist[i]["itemAllDay"], pastDatalist[i]["itemWeekDay"]);
-      pastData.setUserId(futureDatalist[i]["id"]);
+      var pastData = new PastData(futureDatalist[i]["itemName"], futureDatalist[i]["itemYear"], futureDatalist[i]["itemMonth"], futureDatalist[i]["itemDay"], futureDatalist[i]["itemIsTop"],  futureDatalist[i]["itemIsPush"], futureDatalist[i]["itemAllDay"], futureDatalist[i]["itemWeekDay"], futureDatalist[i]["id"]);
 
       if(pastData.itemIsTop.indexOf("true") != -1){
         employees2.insert(0,pastData);

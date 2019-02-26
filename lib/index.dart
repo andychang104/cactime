@@ -119,6 +119,7 @@ class Test extends State<Index> {
         else{
 
           bool isYear =  _counter["isYear"];
+          bool isSmoking =  _counter["isSmoking"];
           int mDay =  _counter["mDay"];
           int mMonth =  _counter["mMonth"];
           int mYear =  _counter["mYear"];
@@ -144,17 +145,21 @@ class Test extends State<Index> {
           userdata.uid = uid;
           userdata.userName = userName;
           userdata.DesireList = desireList;
+          userdata.isSmoking = isSmoking;
 
-          Navigator.pop(context);
-          Navigator.pop(context);
+          preferencesclass.setString("userName", userName);
+          preferencesclass.setInt("mYear", mYear);
+          preferencesclass.setInt("mMonth", mMonth);
+          preferencesclass.setInt("mDay", mDay);
+          preferencesclass.setBool("isYear", isYear);
+          preferencesclass.setBool("isSmoking", isSmoking);
+          preferencesclass.setString("sex", sex);
+          preferencesclass.setString("uid", uid);
 
           notificationclass.showNotification(userName+"您的壽命", 49522011, 99);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => mainIndex("")),
-          );
+          Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context) => new mainIndex("")), (route) => route == null);
+
         }
       });
     }, onError: (Object o) {
@@ -434,6 +439,7 @@ class Test extends State<Index> {
       userEmailEdit = TextEditingController(text: userEmail);
     });
     getDesireList();
+    //test(userdata.uid);
     super.initState();
   }
 

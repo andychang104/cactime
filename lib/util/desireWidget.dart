@@ -1,11 +1,11 @@
+import 'package:cactime/index.dart';
+import 'package:cactime/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:share/share.dart';
 
 class drawerWidget {
-
-
-  Drawer getDrawerWidget(BuildContext context, String userName) {
+  Drawer getDrawerWidget(BuildContext context, String userName, String logOutMsg) {
     Drawer drawerWidget;
     drawerWidget = new Drawer(
         child: SingleChildScrollView(
@@ -179,7 +179,10 @@ class drawerWidget {
                 color: const Color(0xFFf0f0f0),
               )),
           FlatButton(
-            onPressed: () => {},
+            onPressed: () {
+              preferencesclass.delData("uid");
+              Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context) => new Splash()), (route) => route == null);
+            },
             padding:
                 EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 5.0),
             child: Row(
@@ -191,7 +194,7 @@ class drawerWidget {
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
                       Icon(Icons.arrow_forward),
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
-                      new Text("會員登入",
+                      new Text(logOutMsg,
                           style: TextStyle(
                             fontSize: 14.0,
                             color: const Color(0xFF333333),

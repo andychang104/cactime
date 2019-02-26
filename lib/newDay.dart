@@ -154,6 +154,7 @@ class newDay extends State<NewDay> {
 
   @override
   void initState() {
+    dayNameEdit = TextEditingController(text: "");
     notificationclass.setNotificationsPlugin();
     super.initState();
   }
@@ -336,8 +337,7 @@ class newDay extends State<NewDay> {
                             notificationclass.showNotification(dayNameEdit.text, int.parse(time), widget.type);
 
                             var dbHelper = DatabaseHelper();
-                            PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday);
-                            pastData.setUserId(int.parse(time).toString());
+                            PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday, int.parse(time).toString());
                             dbHelper.savePastData(pastData,  tableName);
                             Navigator.pop(context, tableName);
                             print(time);

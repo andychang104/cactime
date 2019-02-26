@@ -370,6 +370,7 @@ class newUser extends State<newUserSetting> {
                             preferencesclass.setInt("mDay", day);
                             preferencesclass.setBool("isYear", false);
                             preferencesclass.setString("sex", selectedSystem.systemname);
+                            preferencesclass.setBool("isSmoking", isCheck);
 
                             userdata.userName = userNameEdit.text;
                             userdata.isYear =  false;
@@ -377,6 +378,7 @@ class newUser extends State<newUserSetting> {
                             userdata.mMonth =  month;
                             userdata.mYear =  year;
                             userdata.Sex =  selectedSystem.systemname;
+                            userdata.isSmoking = isCheck;
                             userdata.uid = widget.uid;
 
                             if(widget.type == 0){

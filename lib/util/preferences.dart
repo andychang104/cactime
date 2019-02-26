@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 String string = "";
 bool boolean = false;
 List<String> stringList;
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 
 class preferences {
@@ -35,8 +34,13 @@ class preferences {
     prefs.setInt(key, intdata);
   }
 
-
-
+  //刪除資料
+  Future delData (String key) async {
+// obtain shared preferences
+    final prefs = await SharedPreferences.getInstance();
+// set value
+    prefs.remove(key);
+  }
 
 }
 
