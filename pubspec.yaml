@@ -36,6 +36,10 @@ dependencies:
   sqflite: any
   firebase_database: ^1.1.0+1
   flutter_local_notifications: ^0.4.5
+  image_picker: ^0.4.12
+  image_cropper: ^1.0.0
+
+
 
 dev_dependencies:
   flutter_test:

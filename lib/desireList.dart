@@ -2,10 +2,12 @@ import 'package:cactime/util/desire.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
+List<String> _tempSelectedCities = [];
+List<String> cities =  userdata.allDesireList;
+ValueChanged<List<String>> onSelectedCitiesListChanged;
+
 class DesireListActivity extends StatefulWidget {
- List<String> cities =  userdata.allDesireList;
- ValueChanged<List<String>> onSelectedCitiesListChanged;
- List<String> _tempSelectedCities = [];
+
 
   @override
   desireList createState() => desireList();
@@ -18,7 +20,7 @@ class desireList extends State<DesireListActivity> {
   //重新整理夢想列表
   void desireReset(){
     setState(() {
-      widget.cities =  userdata.allDesireList;
+      cities =  userdata.allDesireList;
     });
   }
 
@@ -46,9 +48,9 @@ class desireList extends State<DesireListActivity> {
                   separatorBuilder: (context, index) => Divider(
                     height:0,
                   ),
-                  itemCount: widget.cities.length,
+                  itemCount: cities.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final cityName = widget.cities[index];
+                    final cityName = cities[index];
                     return Container(
                       child: CheckboxListTile(
                           title: Text(
@@ -57,24 +59,24 @@ class desireList extends State<DesireListActivity> {
                               fontSize: 16.0,
                             ),
                           ),
-                          value: widget._tempSelectedCities.contains(cityName),
+                          value: _tempSelectedCities.contains(cityName),
                           onChanged: (bool value) {
                             if (value) {
-                              if (!widget._tempSelectedCities.contains(cityName)) {
+                              if (!_tempSelectedCities.contains(cityName)) {
                                 setState(() {
-                                  widget._tempSelectedCities.add(cityName);
+                                  _tempSelectedCities.add(cityName);
                                 });
                               }
                             } else {
-                              if (widget._tempSelectedCities.contains(cityName)) {
+                              if (_tempSelectedCities.contains(cityName)) {
                                 setState(() {
-                                  widget._tempSelectedCities.removeWhere(
+                                  _tempSelectedCities.removeWhere(
                                           (String city) => city == cityName);
                                 });
                               }
                             }
-                            widget
-                                .onSelectedCitiesListChanged(widget._tempSelectedCities);
+
+                            onSelectedCitiesListChanged(_tempSelectedCities);
                           }),
                     );
                   }),
@@ -95,16 +97,16 @@ class desireList extends State<DesireListActivity> {
 
                           String msg = "";
                           List<desire> DesireList = new  List<desire>();
-                          for(int i=0; i<widget._tempSelectedCities.length; i++){
+                          for(int i=0; i<_tempSelectedCities.length; i++){
                             desire item = new desire();
-                            item.desireName = widget._tempSelectedCities[i];
+                            item.desireName = _tempSelectedCities[i];
                             item.isCheck = false;
                             DesireList.add(item);
                             if(msg.length == 0){
-                              msg = widget._tempSelectedCities[i];
+                              msg = _tempSelectedCities[i];
                             }
                             else{
-                              msg = msg+ ","+widget._tempSelectedCities[i];
+                              msg = msg+ ","+_tempSelectedCities[i];
                             }
                           }
 
@@ -170,10 +172,10 @@ class desireList extends State<DesireListActivity> {
 
   @override
   void initState() {
-    widget._tempSelectedCities = new List<String>();
+    _tempSelectedCities = new List<String>();
     if(userdata.DesireList != null){
       for(int i=0; i<userdata.DesireList.length; i++){
-        widget._tempSelectedCities.add(userdata.DesireList[i].desireName);
+        _tempSelectedCities.add(userdata.DesireList[i].desireName);
       }
     }
     super.initState();

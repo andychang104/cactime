@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:cactime/database/database_helper.dart';
-import 'package:cactime/desireList.dart';
 import 'package:cactime/editDay.dart';
 import 'package:cactime/editDesireList.dart';
 import 'package:cactime/editMainDay.dart';
@@ -16,6 +16,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/util/toast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
 
@@ -27,7 +29,9 @@ String difference = "";
 String isYearButton = "年";
 bool isYear = false;
 preferences preferencesclass = new preferences();
-
+File croppedFile;
+Uint8List userBgImageBytes;
+Uint8List userImageBytes;
 
 class DrawerItem {
   String title;
@@ -126,6 +130,9 @@ class MainIndex extends State<mainIndex> {
             }
           }
         });
+      }
+      else if(selectedChoice.number == 1){
+        getImage(0);
       }
       else if(selectedChoice.number == 2){
         Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
@@ -290,6 +297,50 @@ class MainIndex extends State<mainIndex> {
     });
   }
 
+  File _image;
+
+  Future getImage(int type) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _image = image;
+    _cropImage(_image, type);
+
+  }
+
+  Future<Null> _cropImage(File imageFile, int type) async {
+    File croppedfile = await ImageCropper.cropImage(
+      sourcePath: imageFile.path,
+      ratioX: 1.9,
+      ratioY: 1.0,
+      maxWidth: 10000,
+      maxHeight: 10000,
+    );
+    setState(() {
+      if(croppedfile != null){
+        croppedFile = croppedfile;
+        List<int> imageBytes = croppedFile.readAsBytesSync();
+        print(imageBytes);
+        String base64Image = base64Encode(imageBytes);
+        preferencesclass.setString("imageBg", base64Image);
+        userBgImageBytes = base64Decode(base64Image);
+      }
+      getBgImageWidget(type);
+
+    });
+  }
+
+  Widget getBgImageWidget(int type){
+    Widget desireItemWidget;
+
+    if(userBgImageBytes == null){
+      desireItemWidget = Image.asset('images/bg_private.jpg', height: 170.0, fit: BoxFit.cover);
+    }
+    else{
+      desireItemWidget = new Image.memory(userBgImageBytes, height: 170.0, fit: BoxFit.cover);
+    }
+    return desireItemWidget;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     setData(context);
@@ -314,7 +365,7 @@ class MainIndex extends State<mainIndex> {
   ]
 
       ),
-      drawer: drawerwidget.getDrawerWidget(context, userdata.userName, logOutMsg), //侧边栏按钮Drawer
+      drawer: drawerwidget.getDrawerWidget(this, context, userdata.userName, logOutMsg), //侧边栏按钮Drawer
       body: new DefaultTabController(
         length: widget.myTabs.length,
         child: new Column(
@@ -330,9 +381,7 @@ class MainIndex extends State<mainIndex> {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Image.asset(
-                                  'images/bg_private.jpg',
-                                  height: 170.0, fit: BoxFit.cover),
+                              getBgImageWidget(0),
                             ]),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -550,7 +599,9 @@ class MainIndex extends State<mainIndex> {
 
   @override
   void initState() {
-
+    if(userdata.imageBg != null){
+      userBgImageBytes = base64Decode(userdata.imageBg);
+    }
     if(userdata.uid != "nologin84598349"){
       logOutMsg = "會員登出";
     }

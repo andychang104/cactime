@@ -1,13 +1,15 @@
+import 'package:cactime/desireList.dart';
 import 'package:cactime/util/desire.dart';
+import 'package:cactime/util/desireItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
+List<desire> DesireList;
+
 class EidtDesireListActivity extends StatefulWidget {
-  List<String> cities =  [];
-  List<bool> isCheck =  [];
-  List<String> dialogList = ["修改", "刪除", "完成願望"];
+  List<String> dialogList = ["修改", "刪除", "已完成願望"];
   ValueChanged<List<String>> onSelectedCitiesListChanged;
-  //List<String> _tempSelectedCities = [];
+  desireItemWidget desireItemWidgetClass = new desireItemWidget();
 
   @override
   editDesireList createState() => editDesireList();
@@ -15,14 +17,6 @@ class EidtDesireListActivity extends StatefulWidget {
 
 class editDesireList extends State<EidtDesireListActivity> {
   var desireAddEdit = TextEditingController(text: "");
-
-
-  //重新整理夢想列表
-  void desireReset(){
-    setState(() {
-      widget.cities =  userdata.allDesireList;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +29,15 @@ class editDesireList extends State<EidtDesireListActivity> {
               icon: Icon(Icons.add),
               color: Colors.white,
               onPressed: () {
+                DesireList = userdata.DesireList;
+                Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+                  return new DesireListActivity();
+                })).then((String result){
+                  if(result != null){
+                    //widget.setDesirelist(result);
+                    upData("加入願望");
+                  }
+                });
                 //showDesireDialog();
               },
             )
@@ -65,9 +68,9 @@ class editDesireList extends State<EidtDesireListActivity> {
                   separatorBuilder: (context, index) => Divider(
                     height:0,
                   ),
-                  itemCount: widget.cities.length,
+                  itemCount: userdata.DesireList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final cityName = widget.cities[index];
+                    final cityName = userdata.DesireList[index].desireName;
                     return ListTile(
                       contentPadding: EdgeInsets.all(0),
                       dense: false,
@@ -89,7 +92,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                                   child: new Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(widget.cities[index],
+                                      Text(userdata.DesireList[index].desireName,
                                           maxLines: 2,
                                           overflow:
                                           TextOverflow.ellipsis,
@@ -107,7 +110,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                                   ),
                                 ),
 
-                                Icon(Icons.chevron_right),
+                                widget.desireItemWidgetClass.getdesireItemWidget(userdata.DesireList[index].isCheck),
 
                                 Padding(
                                   padding: const EdgeInsets.only(right:10.0),
@@ -124,7 +127,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                       //子item的标题
                       onTap: () {
 
-                        department();
+                        department(index);
 //                        Navigator.push(
 //                          context,
 //                          MaterialPageRoute(builder: (context) => Video(giverList[index].video_url)),
@@ -146,25 +149,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                       child: MaterialButton(
                         height: 45.0,
                         onPressed: () {
-
-                          String msg = "";
-                          List<desire> DesireList = new  List<desire>();
-                          for(int i=0; i<widget.cities.length; i++){
-                            desire item = new desire();
-                            item.desireName = widget.cities[i];
-                            item.isCheck = false;
-                            DesireList.add(item);
-                            if(msg.length == 0){
-                              msg = widget.cities[i];
-                            }
-                            else{
-                              msg = msg+ ","+widget.cities[i];
-                            }
-                          }
-
-                          userdata.DesireList = DesireList;
-
-                          Navigator.pop(context, msg);
+                          Navigator.pop(context, "");
                         },
                         color: Colors.deepPurple,
                         child: Text(
@@ -184,7 +169,13 @@ class editDesireList extends State<EidtDesireListActivity> {
   }
 
   //動作選擇dialog
-  Future<Null> department() async {
+  Future<Null> department(int setNunBer) async {
+    if(userdata.DesireList[setNunBer].isCheck){
+      widget.dialogList = ["修改", "刪除", "未完成願望"];
+    }
+    else{
+      widget.dialogList = ["修改", "刪除", "已完成願望"];
+    }
     switch (await showDialog(
         context: context,
         child: new SimpleDialog(
@@ -192,16 +183,22 @@ class editDesireList extends State<EidtDesireListActivity> {
           children: widget.dialogList.map((value) {
             return new SimpleDialogOption(
                 onPressed: () {
-                  if (value == "CAC") {
+                  if (value == "修改") {
                     Navigator.pop(context);
-//                    askuser();
+                    showEditDesireDialog(setNunBer);
+                  } else if(value == "刪除") {
+                    userdata.DesireList.removeAt(setNunBer);
+                    upData("刪除");
+                    Navigator.pop(context);
                   } else {
+                    if(userdata.DesireList[setNunBer].isCheck){
+                      userdata.DesireList[setNunBer].isCheck = false;
+                    }
+                    else{
+                      userdata.DesireList[setNunBer].isCheck = true;
+                    }
+                    upData("狀態變更");
                     Navigator.pop(context);
-//                    if (outeruserlist.length == 0) {
-//                      toastclass.showToast("目前無借用者列表");
-//                    } else {
-//                      outeruser();
-//                    }
                   }
                 },
                 child: Padding(
@@ -218,16 +215,60 @@ class editDesireList extends State<EidtDesireListActivity> {
     }
   }
 
+  //顯示修改願望視窗
+  Future<Null> showEditDesireDialog(int setNunBer) async {
+    desireAddEdit = TextEditingController(text:  userdata.DesireList[setNunBer].desireName);
+    switch (await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("修改願望"),
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextFormField(
+                controller: desireAddEdit,
+                autofocus: true,
+                decoration: new InputDecoration(hintText: '請輸入您的願望'),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('取消'),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          new FlatButton(
+              child: const Text('確定'),
+              onPressed: () {
+                userdata.DesireList[setNunBer].desireName = desireAddEdit.text;
+                upData("修改");
+                Navigator.pop(context);
+              })
+        ],
+      ),
+    )) {
+    }
+  }
+
+  void upData(String type){
+    setState(() {
+      if(type == "加入願望"){
+        for(int i=0; i<DesireList.length; i++){
+          for(int j=0; j<userdata.DesireList.length; j++){
+            if(userdata.DesireList[j].desireName == DesireList[i].desireName){
+              userdata.DesireList[j].isCheck = DesireList[i].isCheck;
+            }
+          }
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
-    widget.cities = new List<String>();
-    if(userdata.DesireList != null){
-      for(int i=0; i<userdata.DesireList.length; i++){
-        widget.cities.add(userdata.DesireList[i].desireName);
-        widget.isCheck.add(userdata.DesireList[i].isCheck);
-      }
-    }
     super.initState();
   }
 

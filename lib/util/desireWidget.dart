@@ -1,11 +1,12 @@
 import 'package:cactime/index.dart';
+import 'package:cactime/mainIndex.dart';
 import 'package:cactime/splashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:share/share.dart';
 
 class drawerWidget {
-  Drawer getDrawerWidget(BuildContext context, String userName, String logOutMsg) {
+  Drawer getDrawerWidget(MainIndex activity, BuildContext context, String userName, String logOutMsg) {
     Drawer drawerWidget;
     drawerWidget = new Drawer(
         child: SingleChildScrollView(
@@ -39,9 +40,14 @@ class drawerWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     new Container(
-                                      child: new CircleAvatar(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          activity.getImage(1);
+                                        },
+                                        child: new CircleAvatar(
                                           backgroundImage: AssetImage(
                                               'images/ic_launcher_140.png')),
+                                      ),
                                       width: 48.0,
                                       height: 48.0,
                                     )

@@ -23,6 +23,8 @@ String Sex;
 bool isYear;
 bool isSmoking;
 bool isMainPush;
+String imageBg;
+
 
 List<desire> DesireList;
 List<Map> desireListMap;

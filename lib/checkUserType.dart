@@ -37,6 +37,7 @@ class CheckUserType extends State<checkUserType> {
         userdata.isYear = prefs.getBool("isYear");
         userdata.isSmoking = prefs.getBool("isSmoking");
         userdata.isMainPush = prefs.getBool("isMainPush");
+        userdata.imageBg = prefs.getString("imageBg");
         Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context) => new mainIndex("")), (route) => route == null);
       }
     });
