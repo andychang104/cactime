@@ -24,6 +24,7 @@ bool isYear;
 bool isSmoking;
 bool isMainPush;
 String imageBg;
+String imageFace;
 
 
 List<desire> DesireList;

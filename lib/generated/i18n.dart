@@ -18,7 +18,21 @@ class S implements WidgetsLocalizations {
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
+  String get actionSettings => "Edit Death Day";
+  String get appName => "Death Day";
   String get appSplashName => "Death Day";
+  String get desireListSettings => "Editing wishes";
+  String get futureTooMsg => "Left";
+  String get imageSettings => "Set Background";
+  String get indexDay => "D";
+  String get indexDay2 => "D";
+  String get indexFuture => "Future";
+  String get indexMiss => "Ｗoman";
+  String get indexMonth => "M ";
+  String get indexMr => "Man";
+  String get indexPast => "Past";
+  String get indexTitleMsg => "Life left";
+  String get indexYear => "Y";
   String get loginBtn => "E-mail Login/Join";
   String get loginEditMailHint => "Enter an email";
   String get loginEditPasswordHint => "Enter password";
@@ -26,7 +40,16 @@ class S implements WidgetsLocalizations {
   String get loginMsg => "User, please login";
   String get loginTextCheck => "Save account";
   String get loginTitle => "Login";
+  String get logoutTitle => "Logout";
+  String get newUserErrorToastMsg1 => "Please enter information";
   String get noLoginBtn => "Experience";
+  String get pastAimsDay => "Date：";
+  String get pastTooMsg => "Past";
+  String get toastMsgError => "Past";
+  String get toastMsgError2 => "Remaining";
+  String get toastNoLogin => "Currently for the experience, only one can be added in the past/future";
+  String get toastYearError => "Less than a year";
+  String get userLifePush => "Life";
 }
 
 class zh_TW extends S {
@@ -36,23 +59,69 @@ class zh_TW extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get indexFuture => "未來";
+  @override
+  String get indexMr => "男";
+  @override
+  String get pastAimsDay => "目標日：";
+  @override
+  String get indexMonth => "月 ";
+  @override
+  String get loginMsg => "曾經加入過的用戶，請登入";
+  @override
+  String get userLifePush => "您的壽命";
+  @override
+  String get indexYear => "年";
+  @override
+  String get pastTooMsg => "過";
+  @override
   String get appSplashName => "Death Day";
   @override
-  String get noLoginBtn => "體驗試用";
-  @override
-  String get loginTextCheck => "記住帳號";
-  @override
-  String get loginBtn => "E-mail登入/註冊";
-  @override
-  String get loginEditPasswordHint => "請輸入密碼";
+  String get logoutTitle => "會員登出";
   @override
   String get loginEditMailHint => "請輸入電子郵件";
   @override
   String get loginLostPassword => "忘記密碼";
   @override
-  String get loginMsg => "曾經加入過的用戶，請登入";
+  String get indexPast => "過去";
   @override
   String get loginTitle => "會員登入";
+  @override
+  String get indexDay => "日";
+  @override
+  String get indexDay2 => "天";
+  @override
+  String get toastMsgError2 => "剩下";
+  @override
+  String get indexTitleMsg => "您的壽命剩餘";
+  @override
+  String get newUserErrorToastMsg1 => "該使用者尚未輸入資料";
+  @override
+  String get loginBtn => "E-mail登入/註冊";
+  @override
+  String get appName => "人生倒數計時器";
+  @override
+  String get actionSettings => "編輯人生倒數";
+  @override
+  String get desireListSettings => "編輯願望";
+  @override
+  String get imageSettings => "編輯背景";
+  @override
+  String get futureTooMsg => "剩";
+  @override
+  String get toastYearError => "目前未滿一年";
+  @override
+  String get noLoginBtn => "體驗試用";
+  @override
+  String get loginTextCheck => "記住帳號";
+  @override
+  String get toastNoLogin => "您目前為試用狀態，過去/未來只能新增一組，是否需要登入？";
+  @override
+  String get indexMiss => "女";
+  @override
+  String get loginEditPasswordHint => "請輸入密碼";
+  @override
+  String get toastMsgError => "過了";
 }
 
 class en extends S {

@@ -1,8 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:cactime/mainIndex.dart';
-import 'package:cactime/model/userdata.dart';
 import 'package:cactime/newUserSetting.dart';
 import 'package:cactime/util/alllogin.dart';
 import 'package:cactime/util/desire.dart';
@@ -10,7 +7,6 @@ import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/progressdialog.dart';
 import 'package:cactime/util/toast.dart';
-import 'package:cactime/util/desireDialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/gestures.dart';
@@ -19,7 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'generated/i18n.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
-import 'package:cactime/desireList.dart';
 
 
 preferences preferencesclass = new preferences();
@@ -109,7 +104,7 @@ class Test extends State<Index> {
         var _counter = event.snapshot.value;
 
         if(_counter == null){
-          toastclass.showToast("該使用者尚未輸入資料");
+          toastclass.showToast(S.of(context).newUserErrorToastMsg1);
 
           Navigator.push(
             context,
@@ -156,7 +151,7 @@ class Test extends State<Index> {
           preferencesclass.setString("sex", sex);
           preferencesclass.setString("uid", uid);
 
-          notificationclass.showNotification(userName+"您的壽命", 49522011, 99);
+          notificationclass.showNotification(userName+S.of(context).userLifePush, 49522011, 99);
 
           Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context) => new mainIndex("")), (route) => route == null);
 
@@ -303,9 +298,9 @@ class Test extends State<Index> {
                           splashColor: Colors.black12,
                           onPressed: () async {
                             if (userEmailEdit.text.length == 0) {
-                              toastclass.showToast("請輸入帳號");
+                              toastclass.showToast(S.of(context).loginEditMailHint);
                             } else if (userpasswordEdit.text.length == 0) {
-                              toastclass.showToast("請輸入密碼");
+                              toastclass.showToast(S.of(context).loginEditPasswordHint);
                             } else {
                               if (isEmailCheck) {
                                 preferencesclass

@@ -5,6 +5,7 @@ import 'package:cactime/database/database_helper.dart';
 import 'package:cactime/editDay.dart';
 import 'package:cactime/editDesireList.dart';
 import 'package:cactime/editMainDay.dart';
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/model/PastData.dart';
 import 'package:cactime/newDay.dart';
 import 'package:cactime/util/desire.dart';
@@ -23,15 +24,30 @@ import 'package:cactime/model//userdata.dart' as userdata;
 
 int indexType = 0;
 int indexOneType = 0;
-notification notificationclass = new notification();
-String logOutMsg = "會員登入";
+
+String logOutMsg = "";
 String difference = "";
-String isYearButton = "年";
+String isYearButton = "";
+String title = "";
+String tabPast = "";
+String tabfuture = "";
+String mr = "";
+String miss = "";
+String day = "";
+
+notification notificationclass = new notification();
+
 bool isYear = false;
+bool isInitState = false;
+
 preferences preferencesclass = new preferences();
+
 File croppedFile;
+
 Uint8List userBgImageBytes;
 Uint8List userImageBytes;
+
+List<Choice> choices = [];
 
 class DrawerItem {
   String title;
@@ -49,24 +65,16 @@ class Choice {
 
 class mainIndex extends StatefulWidget {
   mainIndex(this.uid);
-  final String title = "人生倒數計時器";
   final String uid;
 
-  final List<Tab> myTabs = <Tab>[
-    new Tab(text: '過去'),
-    new Tab(text: '未來'),
+  List<Tab> myTabs = <Tab>[
+    new Tab(text: tabPast),
+    new Tab(text: tabfuture),
   ];
 
   @override
   MainIndex createState() => MainIndex();
 }
-
-const List<Choice> choices = const <Choice>[
-  const Choice(title: "編輯人生倒數", number: 0),
-  const Choice(title: "編輯背景", number: 1),
-  const Choice(title: "編輯願望", number: 2),
-];
-
 
 class MainIndex extends State<mainIndex> {
   var lifeDay = Text("",style: TextStyle(
@@ -88,7 +96,7 @@ class MainIndex extends State<mainIndex> {
   FirebaseDatabase database;
   DatabaseReference itemRef;
 
-  Choice selectedChoice = choices[0]; // The app's "state".
+  Choice selectedChoice; // The app's "state".
 
   //更多
   void _select(Choice choice) {
@@ -101,10 +109,10 @@ class MainIndex extends State<mainIndex> {
         })).then((String result){
           if(result != null){
             int deathYesr = 76;
-            if(userdata.Sex == "男"){
+            if(userdata.Sex == mr){
               deathYesr = 76;
             }
-            else if(userdata.Sex == "女"){
+            else if(userdata.Sex == miss){
               deathYesr = 81;
             }
 
@@ -122,7 +130,7 @@ class MainIndex extends State<mainIndex> {
               difference = "0";
             }
             toastclass.showToast(difference);
-            setLifeDay(difference+"天");
+            setLifeDay(difference+day);
 
             if(userdata.uid != "nologin84598349"){
               userdata.setDesireListMap();
@@ -135,17 +143,22 @@ class MainIndex extends State<mainIndex> {
         getImage(0);
       }
       else if(selectedChoice.number == 2){
-        Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
-          return new EidtDesireListActivity();
-        })).then((String result){
-          if(result != null){
-            if(userdata.uid != "nologin84598349"){
-              userdata.setDesireListMap();
-              itemRef.child(userdata.uid).set(userdata.toJson());
-            }
-            //widget.setDesirelist(result);
-          }
-        });
+        editDesire();
+      }
+    });
+  }
+
+  //編輯願望
+  void editDesire(){
+    Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+      return new EidtDesireListActivity();
+    })).then((String result){
+      if(result != null){
+        if(userdata.uid != "nologin84598349"){
+          userdata.setDesireListMap();
+          itemRef.child(userdata.uid).set(userdata.toJson());
+        }
+        //widget.setDesirelist(result);
       }
     });
   }
@@ -307,10 +320,17 @@ class MainIndex extends State<mainIndex> {
   }
 
   Future<Null> _cropImage(File imageFile, int type) async {
+    double x = 1.0;
+    double y = 1.0;
+
+    if(type == 0){
+      x = 1.9;
+    }
+
     File croppedfile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
-      ratioX: 1.9,
-      ratioY: 1.0,
+      ratioX: x,
+      ratioY: y,
       maxWidth: 10000,
       maxHeight: 10000,
     );
@@ -320,8 +340,15 @@ class MainIndex extends State<mainIndex> {
         List<int> imageBytes = croppedFile.readAsBytesSync();
         print(imageBytes);
         String base64Image = base64Encode(imageBytes);
-        preferencesclass.setString("imageBg", base64Image);
-        userBgImageBytes = base64Decode(base64Image);
+
+        if(type == 0){
+          preferencesclass.setString("imageBg", base64Image);
+          userBgImageBytes = base64Decode(base64Image);
+        }
+        else if(type == 1){
+          preferencesclass.setString("imageFace", base64Image);
+          userImageBytes = base64Decode(base64Image);
+        }
       }
       getBgImageWidget(type);
 
@@ -331,23 +358,95 @@ class MainIndex extends State<mainIndex> {
   Widget getBgImageWidget(int type){
     Widget desireItemWidget;
 
-    if(userBgImageBytes == null){
-      desireItemWidget = Image.asset('images/bg_private.jpg', height: 170.0, fit: BoxFit.cover);
+    if(type == 0){
+      if(userBgImageBytes == null){
+        desireItemWidget = Image.asset('images/bg_private.jpg', height: 170.0, fit: BoxFit.cover);
+      }
+      else{
+        desireItemWidget = new Image.memory(userBgImageBytes, height: 170.0, fit: BoxFit.cover);
+      }
     }
-    else{
-      desireItemWidget = new Image.memory(userBgImageBytes, height: 170.0, fit: BoxFit.cover);
+    else if(type == 1){
+
+      if(userImageBytes == null){
+        desireItemWidget = new CircleAvatar(backgroundImage: AssetImage('images/ic_launcher_140.png'));
+      }
+      else {
+        desireItemWidget = new CircleAvatar(backgroundImage: MemoryImage(userImageBytes));
+      }
+
     }
+
     return desireItemWidget;
   }
 
+  //塞入預設文案
+  void setText(BuildContext context){
+    if(isInitState){
+      logOutMsg = S.of(context).loginTitle;
+      title = S.of(context).appName;
+      tabPast = S.of(context).indexPast;
+      tabfuture = S.of(context).indexFuture;
+      mr = S.of(context).indexMr;
+      miss = S.of(context).indexMiss;
+      day = S.of(context).indexDay2;
+
+      if(!isYear){
+        isYearButton = S.of(context).indexYear;
+      }
+      else{
+        isYearButton = S.of(context).indexDay;
+      }
+      if(userdata.uid != "nologin84598349"){
+        logOutMsg = S.of(context).logoutTitle;
+      }
+
+      widget.myTabs = <Tab>[
+        new Tab(text: tabPast),
+        new Tab(text: tabfuture),
+      ];
+
+      int deathYesr = 76;
+      if(userdata.Sex == mr){
+        deathYesr = 76;
+      }
+      else if(userdata.Sex == miss){
+        deathYesr = 81;
+      }
+
+      int allDeathYesr = deathYesr + userdata.mYear;
+
+      DateTime selectedDate = new DateTime(allDeathYesr, userdata.mMonth, userdata.mDay);
+      DateTime date = DateTime.now();
+      date = new DateTime(date.year, date.month, date.day);
+      difference = selectedDate.difference(date).inDays.toString();
+
+
+      if(selectedDate.difference(date).inDays <=0){
+        notificationclass.deleteNotification(49522011);
+        difference = "0";
+      }
+      toastclass.showToast(difference);
+      setLifeDay(difference+day);
+
+      choices = <Choice>[
+         Choice(title: S.of(context).actionSettings, number: 0),
+         Choice(title: S.of(context).imageSettings, number: 1),
+         Choice(title: S.of(context).desireListSettings, number: 2),
+      ];
+      selectedChoice = choices[0];
+      isInitState = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     setData(context);
+    setText(context);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.deepPurple,
-        title: new Text(widget.title),
+        title: new Text(title),
           actions: <Widget>[
       // action button
             PopupMenuButton<Choice>(
@@ -386,12 +485,11 @@ class MainIndex extends State<mainIndex> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                     child:
-
                         Row(
                           mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text("您的壽命剩餘", style: TextStyle(
+                              Text(S.of(context).indexTitleMsg, style: TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -408,18 +506,18 @@ class MainIndex extends State<mainIndex> {
                                 splashColor: Colors.black12,
                                   onPressed: () {
                                     if(!isYear){
-                                      isYearButton = "日";
+                                      isYearButton = S.of(context).indexYear;
                                       isYear= true;
                                       int allDay = int.parse(difference);
                                       double dbYear = allDay/365 ;
                                       int overDay = allDay - (dbYear.toInt()*365);
-                                      String overYear = dbYear.toInt().toString() +"年"+overDay.toString()+"天";
+                                      String overYear = dbYear.toInt().toString() +S.of(context).indexYear+overDay.toString()+S.of(context).indexDay2;
                                       setLifeDay(overYear);
                                     }
                                     else{
-                                      isYearButton = "年";
+                                      isYearButton = S.of(context).indexDay;
                                       isYear= false;
-                                      setLifeDay(difference+"天");
+                                      setLifeDay(difference+S.of(context).indexDay2);
                                     }
                                     preferencesclass.setBool("isYear", isYear);
                                     userdata.isYear = isYear;
@@ -475,7 +573,7 @@ class MainIndex extends State<mainIndex> {
                         bool isOk = true;
                         if(userdata.uid == "nologin84598349"){
                           if(pastDataList.length >= 1){
-                            toastclass.showToast("請加入會員以便享有更多倒數日");
+                            toastclass.showToast(S.of(context).toastNoLogin);
                             isOk = false;
                           }
                         }
@@ -502,16 +600,30 @@ class MainIndex extends State<mainIndex> {
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text("目標日："+pastDataList[index].itemMonth.toString()+"月 "+pastDataList[index].itemDay.toString()+","+pastDataList[index].itemYear.toString()+weeknameclass.getWeekName(pastDataList[index].itemWeekDay-1), style: TextStyle(
+                        subtitle: new Text(S.of(context).pastAimsDay+pastDataList[index].itemMonth.toString()+S.of(context).indexMonth+pastDataList[index].itemDay.toString()+","+pastDataList[index].itemYear.toString()+weeknameclass.getWeekName(pastDataList[index].itemWeekDay-1), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容
                         trailing: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.end,
-                            children: [new Text("過"+checkDay(0, pastDataList[index])+"天", style: TextStyle(
+                            children: [new Text(S.of(context).pastTooMsg+checkDay(0, pastDataList[index])+S.of(context).indexDay2, style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                               color: Colors.black,
                             )), new Icon(Icons.chevron_right)]),
+
+                        onLongPress:(){
+                          String toastMsg = "";
+                          int allDay = int.parse(checkDay(0, pastDataList[index]));
+                          if(allDay>=365){
+                            double dbYear = allDay/365 ;
+                            int overDay = allDay - (dbYear.toInt()*365);
+                            toastMsg = S.of(context).toastMsgError+dbYear.toInt().toString() +S.of(context).indexYear+overDay.toString()+S.of(context).indexDay2;
+                          }
+                          else{
+                            toastMsg = S.of(context).toastYearError;
+                          }
+                          toastclass.showToast(toastMsg);
+                        },
                         onTap: (){
                           Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
                             return new EditDay(0, pastDataList[index]);
@@ -533,7 +645,7 @@ class MainIndex extends State<mainIndex> {
                         bool isOk = true;
                         if(userdata.uid == "nologin84598349"){
                           if(futureDataList.length >= 1){
-                            toastclass.showToast("請加入會員以便享有更多倒數日");
+                            toastclass.showToast(S.of(context).toastNoLogin);
                             isOk = false;
                           }
                         }
@@ -548,8 +660,6 @@ class MainIndex extends State<mainIndex> {
                             }
                           });
                         }
-
-
                       }
                   ), body: ListView.separated(
                     itemCount: futureDataList.length,
@@ -562,16 +672,29 @@ class MainIndex extends State<mainIndex> {
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text("目標日："+futureDataList[index].itemMonth.toString()+"月 "+futureDataList[index].itemDay.toString()+","+futureDataList[index].itemYear.toString()+weeknameclass.getWeekName(futureDataList[index].itemWeekDay-1), style: TextStyle(
+                        subtitle: new Text(S.of(context).pastAimsDay+futureDataList[index].itemMonth.toString()+S.of(context).indexMonth+futureDataList[index].itemDay.toString()+","+futureDataList[index].itemYear.toString()+weeknameclass.getWeekName(futureDataList[index].itemWeekDay-1), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容
                         trailing: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.end,
-                            children: [new Text("剩"+checkDay(1, futureDataList[index])+"天", style: TextStyle(
+                            children: [new Text(S.of(context).futureTooMsg+checkDay(1, futureDataList[index])+S.of(context).indexDay2, style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                               color: Colors.black,
                             )), new Icon(Icons.chevron_right)]),
+                        onLongPress:(){
+                          String toastMsg = "";
+                          int allDay = int.parse(checkDay(1, futureDataList[index]));
+                          if(allDay>=365){
+                            double dbYear = allDay/365 ;
+                            int overDay = allDay - (dbYear.toInt()*365);
+                            toastMsg = S.of(context).toastMsgError2+dbYear.toInt().toString() +S.of(context).indexYear+overDay.toString()+S.of(context).indexDay2;
+                          }
+                          else{
+                            toastMsg = S.of(context).toastYearError;
+                          }
+                          toastclass.showToast(toastMsg);
+                        },
                         onTap: (){
                           Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
                             return new EditDay(1, futureDataList[index]);
@@ -599,35 +722,14 @@ class MainIndex extends State<mainIndex> {
 
   @override
   void initState() {
+    isInitState = true;
     if(userdata.imageBg != null){
       userBgImageBytes = base64Decode(userdata.imageBg);
     }
-    if(userdata.uid != "nologin84598349"){
-      logOutMsg = "會員登出";
+    if(userdata.imageFace != null){
+      userImageBytes = base64Decode(userdata.imageFace);
     }
 
-    int deathYesr = 76;
-    if(userdata.Sex == "男"){
-      deathYesr = 76;
-    }
-    else if(userdata.Sex == "女"){
-      deathYesr = 81;
-    }
-
-    int allDeathYesr = deathYesr + userdata.mYear;
-
-    DateTime selectedDate = new DateTime(allDeathYesr, userdata.mMonth, userdata.mDay);
-    DateTime date = DateTime.now();
-    date = new DateTime(date.year, date.month, date.day);
-    difference = selectedDate.difference(date).inDays.toString();
-
-
-    if(selectedDate.difference(date).inDays <=0){
-      notificationclass.deleteNotification(49522011);
-      difference = "0";
-    }
-    toastclass.showToast(difference);
-    setLifeDay(difference+"天");
     getDesireList();
     super.initState();
   }

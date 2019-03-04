@@ -1,9 +1,14 @@
 import 'package:cactime/index.dart';
 import 'package:cactime/mainIndex.dart';
+import 'package:cactime/other.dart';
+import 'package:cactime/personal.dart';
 import 'package:cactime/splashScreen.dart';
+import 'package:cactime/util/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:share/share.dart';
+
+preferences preferencesclass = new preferences();
 
 class drawerWidget {
   Drawer getDrawerWidget(MainIndex activity, BuildContext context, String userName, String logOutMsg) {
@@ -35,24 +40,33 @@ class drawerWidget {
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 10.0, right: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    new Container(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          activity.getImage(1);
-                                        },
-                                        child: new CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              'images/ic_launcher_140.png')),
-                                      ),
-                                      width: 48.0,
-                                      height: 48.0,
-                                    )
-                                  ],
-                                )),
+
+                                child: Stack(
+                                  alignment: FractionalOffset.bottomRight,
+                                  children: [            new Container(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        activity.getImage(1);
+                                      },
+                                      child:  activity.getBgImageWidget(1),
+                                    ),
+                                    width: 55.0,
+                                    height: 55.0,
+                                  )
+                                  ,
+                                  new Container(
+                                    color: Colors.white,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        activity.getImage(1);
+                                      },
+                                      child:  Icon(Icons.image, size: 15.0),
+                                    ),
+                                    width: 15.0,
+                                    height: 15.0,
+                                  )
+                                  ,]),
+                             ),
                             Padding(
                                 padding: const EdgeInsets.only(
                                     left: 10.0,
@@ -77,7 +91,10 @@ class drawerWidget {
             ],
           ),
           FlatButton(
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Personal()),);
+            },
             padding:
                 EdgeInsets.only(left: 5.0, top: 5.0, right: 5.0, bottom: 5.0),
             child: Row(
@@ -101,7 +118,10 @@ class drawerWidget {
                 color: const Color(0xFFf0f0f0),
               )),
           FlatButton(
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              activity.editDesire();
+            },
             padding:
                 EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 5.0),
             child: Row(
@@ -157,7 +177,10 @@ class drawerWidget {
                 color: const Color(0xFFf0f0f0),
               )),
           FlatButton(
-            onPressed: () => {},
+            onPressed: (){
+              Navigator.of(context).pop();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Other()),);
+            },
             padding:
                 EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 5.0),
             child: Row(
