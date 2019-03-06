@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:cactime/database/database_helper.dart';
 import 'package:cactime/editDay.dart';
 import 'package:cactime/editDesireList.dart';
@@ -143,7 +144,12 @@ class MainIndex extends State<mainIndex> {
         getImage(0);
       }
       else if(selectedChoice.number == 2){
-        editDesire();
+        if(userdata.uid == "nologin84598349"){
+          toastclass.showToast(S.of(context).dialogNoLoginMain);
+        }
+        else{
+          editDesire();
+        }
       }
     });
   }
@@ -322,17 +328,21 @@ class MainIndex extends State<mainIndex> {
   Future<Null> _cropImage(File imageFile, int type) async {
     double x = 1.0;
     double y = 1.0;
+    int max = 250;
 
+    //double width = MediaQuery.of(context).size.toString();
+    print("螢幕寬度:"+window.physicalSize.width.toString());
     if(type == 0){
       x = 1.9;
+      max = window.physicalSize.width.toInt();
     }
 
     File croppedfile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
       ratioX: x,
       ratioY: y,
-      maxWidth: 10000,
-      maxHeight: 10000,
+      maxWidth: max,
+      maxHeight: max,
     );
     setState(() {
       if(croppedfile != null){
@@ -406,12 +416,45 @@ class MainIndex extends State<mainIndex> {
         new Tab(text: tabfuture),
       ];
 
+      String lo = Localizations.localeOf(context).toString();
+
+      print("目前語系:"+lo);
+
       int deathYesr = 76;
       if(userdata.Sex == mr){
-        deathYesr = 76;
+        if(lo == "zh_TW"){
+          deathYesr = 76;
+        }
+        else if(lo == "zh_CN"){
+          deathYesr = 74;
+        }
+        else if(lo == "zh_HK"){
+          deathYesr = 80;
+        }
+        else if(lo == "ko_KR"){
+          deathYesr = 79;
+        }
+        else if(lo == "ko_JP"){
+          deathYesr = 81;
+        }
       }
       else if(userdata.Sex == miss){
         deathYesr = 81;
+        if(lo == "zh_TW"){
+          deathYesr = 86;
+        }
+        else if(lo == "zh_CN"){
+          deathYesr = 77;
+        }
+        else if(lo == "zh_HK"){
+          deathYesr = 84;
+        }
+        else if(lo == "ko_KR"){
+          deathYesr = 86;
+        }
+        else if(lo == "ko_JP"){
+          deathYesr = 87;
+        }
       }
 
       int allDeathYesr = deathYesr + userdata.mYear;
@@ -600,7 +643,7 @@ class MainIndex extends State<mainIndex> {
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text(S.of(context).pastAimsDay+pastDataList[index].itemMonth.toString()+S.of(context).indexMonth+pastDataList[index].itemDay.toString()+","+pastDataList[index].itemYear.toString()+weeknameclass.getWeekName(pastDataList[index].itemWeekDay-1), style: TextStyle(
+                        subtitle: new Text(S.of(context).pastAimsDay+pastDataList[index].itemMonth.toString()+S.of(context).indexMonth+pastDataList[index].itemDay.toString()+","+pastDataList[index].itemYear.toString()+weeknameclass.getWeekName(pastDataList[index].itemWeekDay-1, context), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容
@@ -672,7 +715,7 @@ class MainIndex extends State<mainIndex> {
                           fontSize: 18.0,
                           color: Colors.black,
                         )),//子item的标题
-                        subtitle: new Text(S.of(context).pastAimsDay+futureDataList[index].itemMonth.toString()+S.of(context).indexMonth+futureDataList[index].itemDay.toString()+","+futureDataList[index].itemYear.toString()+weeknameclass.getWeekName(futureDataList[index].itemWeekDay-1), style: TextStyle(
+                        subtitle: new Text(S.of(context).pastAimsDay+futureDataList[index].itemMonth.toString()+S.of(context).indexMonth+futureDataList[index].itemDay.toString()+","+futureDataList[index].itemYear.toString()+weeknameclass.getWeekName(futureDataList[index].itemWeekDay-1, context), style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.black54,
                         )),//子item的内容

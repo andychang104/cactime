@@ -1,4 +1,5 @@
 import 'package:cactime/desireList.dart';
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/newUserSetting.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class desireEditWidget {
               crossAxisAlignment : CrossAxisAlignment.start,
               children: [
                 new Text(
-                  "願望：",
+                  S.of(context).indexDesireTitle2,
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
@@ -45,7 +46,7 @@ class desireEditWidget {
                                 return new DesireListActivity();
                               })).then((String result){
                                 if(result != null){
-                                  widget.setDesirelist(result);
+                                  widget.setDesirelist(result, context);
                                 }
                               });
                             }),

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cactime/generated/i18n.dart';
 import 'package:flutter/material.dart';
 
 class Other extends StatefulWidget {
@@ -13,7 +14,7 @@ class other extends State<Other> {
         backgroundColor: Colors.white,
         appBar: new AppBar(
             backgroundColor: Colors.deepPurple,
-            title: new Text("關於"),
+            title: new Text(S.of(context).aboutTitle),
             actions: <Widget>[]),
         body:
 
@@ -38,13 +39,13 @@ class other extends State<Other> {
 
                                   children: <Widget>[
                                     Image.asset('images/ic_launcher_140.png', width:100.0, height: 100.0, fit: BoxFit.cover),
-                                    Text("人生倒數計時器",
+                                    Text(S.of(context).appName,
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           height:1.2,
                                           color: const Color(0xFF333333),
                                         )),
-                                    Text("版本號碼：1.2.0",
+                                    Text(S.of(context).otherNumber,
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           height:1.2,
@@ -68,7 +69,7 @@ class other extends State<Other> {
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
                                 children: <Widget>[
-                                  new Text("© 2019 人生倒數計時器團隊 版權所有 侵害必究",
+                                  new Text(S.of(context).otherBottomMsg,
                                       style: TextStyle(
                                         fontSize: 14.0,
                                         color: Colors.black,

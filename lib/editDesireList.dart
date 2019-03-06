@@ -1,13 +1,15 @@
 import 'package:cactime/desireList.dart';
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/util/desire.dart';
 import 'package:cactime/util/desireItemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
 
 List<desire> DesireList;
+bool isInitState = false;
 
 class EidtDesireListActivity extends StatefulWidget {
-  List<String> dialogList = ["修改", "刪除", "已完成願望"];
+  List<String> dialogList = [];
   ValueChanged<List<String>> onSelectedCitiesListChanged;
   desireItemWidget desireItemWidgetClass = new desireItemWidget();
 
@@ -18,12 +20,20 @@ class EidtDesireListActivity extends StatefulWidget {
 class editDesireList extends State<EidtDesireListActivity> {
   var desireAddEdit = TextEditingController(text: "");
 
+
+  //塞入預設文案
+  void setText(BuildContext context) {
+    if (isInitState) {
+      widget.dialogList = [S.of(context).desirelistEdit, S.of(context).desirelistDel, S.of(context).desirelistCheck];
+      isInitState = false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.deepPurple,
-          title: Text("願望設定"),
+          title: Text(S.of(context).desirelistTitle),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
@@ -50,7 +60,7 @@ class editDesireList extends State<EidtDesireListActivity> {
             Padding(
                 padding:
                 const EdgeInsets.all(10),
-                child: Text("您在人生最後的日子有一定想要完成的願望嗎？\n列出您的願望，在未來日子裡好好審視完成了幾件", textAlign: TextAlign.center, style: TextStyle(
+                child: Text(S.of(context).desirelistTopMsg, textAlign: TextAlign.center, style: TextStyle(
                   fontSize: 16.0,
                   color:
                   const Color(0xFF8f8f8f),
@@ -127,7 +137,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                       //子item的标题
                       onTap: () {
 
-                        department(index);
+                        department(index, context);
 //                        Navigator.push(
 //                          context,
 //                          MaterialPageRoute(builder: (context) => Video(giverList[index].video_url)),
@@ -153,7 +163,7 @@ class editDesireList extends State<EidtDesireListActivity> {
                         },
                         color: Colors.deepPurple,
                         child: Text(
-                          '送出',
+                          S.of(context).indexPutBtn,
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ),
@@ -169,24 +179,24 @@ class editDesireList extends State<EidtDesireListActivity> {
   }
 
   //動作選擇dialog
-  Future<Null> department(int setNunBer) async {
+  Future<Null> department(int setNunBer, BuildContext context) async {
     if(userdata.DesireList[setNunBer].isCheck){
-      widget.dialogList = ["修改", "刪除", "未完成願望"];
+      widget.dialogList = [S.of(context).desirelistEdit, S.of(context).desirelistDel, S.of(context).desirelistNocheck];
     }
     else{
-      widget.dialogList = ["修改", "刪除", "已完成願望"];
+      widget.dialogList = [S.of(context).desirelistEdit, S.of(context).desirelistDel, S.of(context).desirelistCheck];
     }
     switch (await showDialog(
         context: context,
         child: new SimpleDialog(
-          title: new Text("設定"),
+          title: new Text(S.of(context).desirelistSetting),
           children: widget.dialogList.map((value) {
             return new SimpleDialogOption(
                 onPressed: () {
-                  if (value == "修改") {
+                  if (value == S.of(context).desirelistEdit) {
                     Navigator.pop(context);
                     showEditDesireDialog(setNunBer);
-                  } else if(value == "刪除") {
+                  } else if(value == S.of(context).desirelistDel) {
                     userdata.DesireList.removeAt(setNunBer);
                     upData("刪除");
                     Navigator.pop(context);
@@ -221,7 +231,7 @@ class editDesireList extends State<EidtDesireListActivity> {
     switch (await showDialog<String>(
       context: context,
       child: new AlertDialog(
-        title: new Text("修改願望"),
+        title: new Text(S.of(context).desireEdit),
         contentPadding: const EdgeInsets.all(16.0),
         content: new Row(
           children: <Widget>[
@@ -229,19 +239,19 @@ class editDesireList extends State<EidtDesireListActivity> {
               child: new TextFormField(
                 controller: desireAddEdit,
                 autofocus: true,
-                decoration: new InputDecoration(hintText: '請輸入您的願望'),
+                decoration: new InputDecoration(hintText: S.of(context).desirelistHint),
               ),
             )
           ],
         ),
         actions: <Widget>[
           new FlatButton(
-              child: const Text('取消'),
+              child: Text(S.of(context).dialogNoBtn),
               onPressed: () {
                 Navigator.pop(context);
               }),
           new FlatButton(
-              child: const Text('確定'),
+              child: Text(S.of(context).dialogOkBtn),
               onPressed: () {
                 userdata.DesireList[setNunBer].desireName = desireAddEdit.text;
                 upData("修改");
@@ -269,6 +279,7 @@ class editDesireList extends State<EidtDesireListActivity> {
 
   @override
   void initState() {
+    isInitState = true;
     super.initState();
   }
 

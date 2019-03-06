@@ -1,3 +1,4 @@
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/index.dart';
 import 'package:cactime/mainIndex.dart';
 import 'package:cactime/other.dart';
@@ -7,6 +8,8 @@ import 'package:cactime/util/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:share/share.dart';
+import 'package:cactime/model//userdata.dart' as userdata;
+
 
 preferences preferencesclass = new preferences();
 
@@ -103,7 +106,7 @@ class drawerWidget {
                 Padding(padding: const EdgeInsets.only(left: 10.0)),
                 Icon(Icons.announcement),
                 Padding(padding: const EdgeInsets.only(left: 10.0)),
-                new Text("個資宣告",
+                new Text(S.of(context).privacyTitle,
                     style: TextStyle(
                       fontSize: 14.0,
                       color: const Color(0xFF333333),
@@ -119,8 +122,13 @@ class drawerWidget {
               )),
           FlatButton(
             onPressed: () {
-              Navigator.of(context).pop();
-              activity.editDesire();
+              if(userdata.uid == "nologin84598349"){
+                toastclass.showToast(S.of(context).dialogNoLoginMain);
+              }
+              else{
+                Navigator.of(context).pop();
+                activity.editDesire();
+              }
             },
             padding:
                 EdgeInsets.only(left: 5.0, top: 5.0, right: 10.0, bottom: 5.0),
@@ -134,7 +142,7 @@ class drawerWidget {
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
                       Icon(Icons.edit),
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
-                      new Text("編輯願望",
+                      new Text(S.of(context).desireListSettings,
                           style: TextStyle(
                             fontSize: 14.0,
                             color: const Color(0xFF333333),
@@ -162,7 +170,7 @@ class drawerWidget {
                 Padding(padding: const EdgeInsets.only(left: 10.0)),
                 Icon(Icons.share),
                 Padding(padding: const EdgeInsets.only(left: 10.0)),
-                new Text("分享",
+                new Text(S.of(context).shareTitle,
                     style: TextStyle(
                       fontSize: 14.0,
                       color: const Color(0xFF333333),
@@ -192,7 +200,7 @@ class drawerWidget {
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
                       Icon(Icons.clear_all),
                       Padding(padding: const EdgeInsets.only(left: 10.0)),
-                      new Text("關於",
+                      new Text(S.of(context).aboutTitle,
                           style: TextStyle(
                             fontSize: 14.0,
                             color: const Color(0xFF333333),

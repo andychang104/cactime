@@ -1,3 +1,4 @@
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/util/desire.dart';
 import 'package:flutter/material.dart';
 import 'package:cactime/model//userdata.dart' as userdata;
@@ -29,7 +30,7 @@ class desireList extends State<DesireListActivity> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text("願望設定"),
+        title: Text(S.of(context).desirelistTitle),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
@@ -116,7 +117,7 @@ class desireList extends State<DesireListActivity> {
                         },
                         color: Colors.deepPurple,
                         child: Text(
-                          '完成',
+                          S.of(context).newdayNewPutBtn,
                           style: TextStyle(color: Colors.white, fontSize: 16.0),
                         ),
                       ),
@@ -137,7 +138,7 @@ class desireList extends State<DesireListActivity> {
     switch (await showDialog<String>(
       context: context,
       child: new AlertDialog(
-        title: new Text("新增願望"),
+        title: new Text(S.of(context).desirelistNewTitle),
         contentPadding: const EdgeInsets.all(16.0),
         content: new Row(
           children: <Widget>[
@@ -145,23 +146,22 @@ class desireList extends State<DesireListActivity> {
               child: new TextFormField(
                 controller: desireAddEdit,
                 autofocus: true,
-                decoration: new InputDecoration(hintText: '請輸入您的願望'),
+                decoration: new InputDecoration(hintText: S.of(context).desirelistHint),
               ),
             )
           ],
         ),
         actions: <Widget>[
           new FlatButton(
-              child: const Text('取消'),
+              child: Text(S.of(context).dialogNoBtn),
               onPressed: () {
                 Navigator.pop(context);
               }),
           new FlatButton(
-              child: const Text('確定'),
+              child: Text(S.of(context).dialogOkBtn),
               onPressed: () {
                 userdata.allDesireList.add(desireAddEdit.text);
                 desireReset();
-//                callapiclass.getLogin(passwordEdit.text, type, context);
                 Navigator.pop(context);
               })
         ],

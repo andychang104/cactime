@@ -1,4 +1,4 @@
-import 'package:cactime/mainIndex.dart';
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/util/localdata.dart';
 import 'package:cactime/util/preferences.dart';
 import 'package:cactime/util/system.dart';
@@ -10,10 +10,10 @@ import 'package:cactime/model//userdata.dart' as userdata;
 localdata localdataclass = new localdata();
 preferences preferencesclass = new preferences();
 var userNameEdit = TextEditingController(text: "");
-
+bool isInitState = false;
+bool isIos = false;
 
 class EditMainDay extends StatefulWidget {
-  String title = "編輯個人資料";
   RichText newDayText = new RichText(text: new TextSpan(text: ""));
   @override
   editMainDay createState() => editMainDay();
@@ -23,7 +23,7 @@ class editMainDay extends State<EditMainDay> {
   bool isCheck = false;
   System selectedSystem;
   bool valuePush = false;
-  List<System> systemList = localdataclass.getSystemList();
+  List<System> systemList;
   void onChangedPush(bool value){
     setState(() {
       valuePush = value;
@@ -33,7 +33,7 @@ class editMainDay extends State<EditMainDay> {
   var dayTextColor = Colors.black;
 
   DateTime selectedDate = DateTime.now();
-  String birthday = "請選擇生日";
+  String birthday = "";
   int year = 2008;
   int month = 12;
   int day = 31;
@@ -77,13 +77,36 @@ class editMainDay extends State<EditMainDay> {
     });
   }
 
+  //塞入預設文案
+  void setText(BuildContext context) {
+
+    if (isInitState) {
+      systemList = localdataclass.getSystemList(context);
+      isIos = Theme.of(context).platform == TargetPlatform.iOS;
+      birthday = S.of(context).indexBirthdayHint;
+      userNameEdit = TextEditingController(text: userdata.userName);
+      if(userdata.Sex == S.of(context).indexMr){
+        selectedSystem=systemList[0];
+      }
+      else {
+        selectedSystem=systemList[1];
+      }
+      selectedDate = new DateTime(userdata.mYear, userdata.mMonth, userdata.mDay);
+      year = userdata.mYear;
+      month = userdata.mMonth;
+      day = userdata.mDay;
+      birthday = userdata.mYear.toString()+"/"+userdata.mMonth.toString()+"/"+userdata.mDay.toString();
+      isInitState = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
+    setText(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text(widget.title),
+        title: Text(S.of(context).editMandataTitle),
       ),
       body: new Container(
         margin: const EdgeInsets.all(4.0),
@@ -96,7 +119,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "姓名：",
+                      S.of(context).indexNameTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -107,7 +130,7 @@ class editMainDay extends State<EditMainDay> {
                       child: new TextField(
                           controller: userNameEdit,
                           decoration: InputDecoration(
-                            hintText: "請輸入姓名",
+                            hintText: S.of(context).indexNameTitleHint,
                             border: new UnderlineInputBorder(),
                           ),
                           style: TextStyle(
@@ -124,7 +147,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "生日：",
+                      S.of(context).indexBirthdayTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -163,7 +186,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "性別：",
+                      S.of(context).indexSexTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -174,7 +197,7 @@ class editMainDay extends State<EditMainDay> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: new DropdownButton<System>(
-                          hint: new Text("請選擇性別",
+                          hint: new Text(S.of(context).indexSexHint,
                               style: TextStyle(
                                 fontSize: 16.0,
                               )),
@@ -208,7 +231,7 @@ class editMainDay extends State<EditMainDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "通知：(每日1次 8:00)",
+                      S.of(context).indexPush,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -238,7 +261,7 @@ class editMainDay extends State<EditMainDay> {
                       flex: 1,
                       child: new RichText(
                         text: new TextSpan(
-                            text: "是否有抽菸習慣",
+                            text: S.of(context).indexSmoking,
                             style: new TextStyle(
                               fontSize: 16.0,
                               color: Colors.black,
@@ -267,7 +290,7 @@ class editMainDay extends State<EditMainDay> {
                       flex: 1,
                       child: new MaterialButton(
                         height: 45.0,
-                        child: Text("完成",
+                        child: Text(S.of(context).newdayNewPutBtn,
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white,
@@ -315,25 +338,13 @@ class editMainDay extends State<EditMainDay> {
 
   @override
   void initState() {
+    isInitState = true;
     if(userdata.isMainPush !=null){
       valuePush = userdata.isMainPush;
     }
     if(userdata.isSmoking != null){
       isCheck = userdata.isSmoking;
     }
-
-    userNameEdit = TextEditingController(text: userdata.userName);
-    if(userdata.Sex == "男"){
-      selectedSystem=systemList[0];
-    }
-    else {
-      selectedSystem=systemList[1];
-    }
-    selectedDate = new DateTime(userdata.mYear, userdata.mMonth, userdata.mDay);
-    year = userdata.mYear;
-    month = userdata.mMonth;
-    day = userdata.mDay;
-    birthday = userdata.mYear.toString()+"/"+userdata.mMonth.toString()+"/"+userdata.mDay.toString();
     super.initState();
   }
 }

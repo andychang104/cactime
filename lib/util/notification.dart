@@ -1,3 +1,5 @@
+import 'package:cactime/generated/i18n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
@@ -17,7 +19,7 @@ class notification{
   }
 
   //新增本地推播
-  showNotification(String msg, int id, int type) async{
+  showNotification(String msg, int id, int type, BuildContext context) async{
     var time = new Time(8, 0, 0);
     var androidPlatformChannelSpecifics =
     new AndroidNotificationDetails('channel id',
@@ -29,20 +31,20 @@ class notification{
     await flutterLocalNotificationsPlugin.showDailyAtTime(
         id,
         'show daily title',
-        getPlshMsg(msg, type),
+        getPlshMsg(msg, type, context),
         time,
         platformChannelSpecifics);
   }
 
-  String getPlshMsg(String msg, int type){
+  String getPlshMsg(String msg, int type, BuildContext context){
     if(type == 0){
-      msg += "又過了1天，快來看看過了多少天吧！";
+      msg += S.of(context).plshMsg1;
     }
     else if(type == 1){
-      msg += "又過了1天，快來看看剩餘多少天吧！";
+      msg += S.of(context).plshMsg2;
     }
     else if(type == 99){
-      msg += "又少了1天，快來看看剩餘多少天吧！";
+      msg += S.of(context).plshMsg3;
     }
     return msg;
   }

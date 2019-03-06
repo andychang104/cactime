@@ -12,28 +12,65 @@ class S implements WidgetsLocalizations {
   const S();
 
   static const GeneratedLocalizationsDelegate delegate =
-      GeneratedLocalizationsDelegate();
+    GeneratedLocalizationsDelegate();
 
   static S of(BuildContext context) => Localizations.of<S>(context, S);
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
+
+  String get aboutTitle => "About";
   String get actionSettings => "Edit Death Day";
   String get appName => "Death Day";
   String get appSplashName => "Death Day";
+  String get desireEdit => "Modify wishes";
   String get desireListSettings => "Editing wishes";
+  String get desirelistCheck => "Complete wish";
+  String get desirelistDel => "Delete";
+  String get desirelistEdit => "Edit";
+  String get desirelistHint => "Enter the wish you want to complete";
+  String get desirelistNewTitle => "Add a wish";
+  String get desirelistNocheck => "Unfinished wish";
+  String get desirelistSetting => "Setting";
+  String get desirelistTitle => "Wish setting";
+  String get desirelistTopMsg => "Do you have a wish to complete at the end?\nList your wishes and review a few pieces";
+  String get dialogNoBtn => "Cancel";
+  String get dialogNoLoginMain => "Currently for the experience, can`t set a wish, whether to end the experience to log in?";
+  String get dialogOkBtn => "Ok";
+  String get dialogTitle => "Message";
+  String get editMandataTitle => "Edit User Data";
+  String get editdayNewTitle1 => "Edit Memorial";
+  String get editdayNewTitle2 => "Edit Countdown";
   String get futureTooMsg => "Left";
   String get imageSettings => "Set Background";
+  String get indexBirthdayHint => "Select Birthday";
+  String get indexBirthdayMsg => "Birthday";
+  String get indexBirthdayTitle => "Birthday：";
   String get indexDay => "D";
   String get indexDay2 => "D";
+  String get indexDesireHint => "Choose the wish to complete";
+  String get indexDesireTitle => "Desire";
+  String get indexDesireTitle2 => "Desire：";
   String get indexFuture => "Future";
   String get indexMiss => "Ｗoman";
   String get indexMonth => "M ";
   String get indexMr => "Man";
+  String get indexNameMsg => "Name";
+  String get indexNameTitle => "Name：";
+  String get indexNameTitleHint => "User Name";
   String get indexPast => "Past";
+  String get indexPush => "Notice：(1Day 8:00)";
+  String get indexPutBtn => "Send";
+  String get indexSetting => "Death Day Setting";
+  String get indexSexHint => "Select Sex";
+  String get indexSexMsg => "Sex";
+  String get indexSexTitle => "Sex：";
+  String get indexSmoking => "Is there a smoking habit?";
   String get indexTitleMsg => "Life left";
   String get indexYear => "Y";
+  String get login => "Login";
   String get loginBtn => "E-mail Login/Join";
+  String get loginDialogJoin => "Have you joined the membership yet?";
   String get loginEditMailHint => "Enter an email";
   String get loginEditPasswordHint => "Enter password";
   String get loginLostPassword => "Forget password";
@@ -42,9 +79,50 @@ class S implements WidgetsLocalizations {
   String get loginTitle => "Login";
   String get logoutTitle => "Logout";
   String get newUserErrorToastMsg1 => "Please enter information";
+  String get newdayNewDayError1 => "Countdown";
+  String get newdayNewDayError2 => "Not filled in, please reconfirm";
+  String get newdayNewDayHint => "Select Countdown";
+  String get newdayNewDayTitle => "Date：";
+  String get newdayNewMsgHint => "Event Title";
+  String get newdayNewMsgTitle1 => "Event";
+  String get newdayNewMsgTitle2 => "Event：";
+  String get newdayNewPush => "Notice：";
+  String get newdayNewPutBtn => "Done";
+  String get newdayNewTitle1 => "New Memorial";
+  String get newdayNewTitle2 => "New Countdown";
+  String get newdayNewTop => "Top：";
   String get noLoginBtn => "Experience";
+  String get otherBottomMsg => "© 2019 Death Day Team Copyright Infringement";
+  String get otherNumber => "Version number：1.2.0";
   String get pastAimsDay => "Date：";
+  String get pastArray1 => "(Mon)";
+  String get pastArray2 => "(Tue)";
+  String get pastArray3 => "(Wed)";
+  String get pastArray4 => "(Thu)";
+  String get pastArray5 => "(Fri)";
+  String get pastArray6 => "(Sat)";
+  String get pastArray7 => "(Sun)";
   String get pastTooMsg => "Past";
+  String get personalMsg => "This action application, prior to obtaining your consent, collects personal data from the above fields for the purpose of opinion processing, consumer service and marketing, and is only available to the countdown team for the purpose and duration of the above purposes. In accordance with the relevant laws and regulations of China and the necessary use, in addition to fulfilling the statutory obligations or with your consent, no other treatment or use will be made. For the personal data you provide, you can exercise your rights in accordance with Article 3 of the Personal Data Protection Law of China. In the event that you fail to provide the information required for the field, the Mobile Application will not be able to provide a response or service in a timely or complete manner and will affect your interest.";
+  String get personalTitle => "Personal declaration";
+  String get plshMsg1 => "After another day, let's see how many days have passed!";
+  String get plshMsg2 => "After another day, let's see how many days remain!";
+  String get plshMsg3 => "It’s one more day, let’s see how many days remain!";
+  String get privacyTitle => "Privacy";
+  String get progressMsg => "Please wait...";
+  String get shareTitle => "Share";
+  String get toastMag1 => "Login Ok";
+  String get toastMag10 => "Login error, please login again";
+  String get toastMag11 => "Account format error";
+  String get toastMag12 => "Password must be longer than 6 characters";
+  String get toastMag2 => "Account error";
+  String get toastMag3 => "Join Ok";
+  String get toastMag4 => "Password error";
+  String get toastMag5 => "Transmitted E-mail";
+  String get toastMag6 => "E-mail Failed to send";
+  String get toastMag7 => "This account is not FB login when applying";
+  String get toastMag8 => "Confirm account number and password";
+  String get toastMag9 => "No such user";
   String get toastMsgError => "Past";
   String get toastMsgError2 => "Remaining";
   String get toastNoLogin => "Currently for the experience, only one can be added in the past/future";
@@ -52,66 +130,50 @@ class S implements WidgetsLocalizations {
   String get userLifePush => "Life";
 }
 
-class zh_TW extends S {
-  const zh_TW();
+class $zh_HK extends S {
+  const $zh_HK();
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get indexFuture => "未來";
+  String get editdayNewTitle1 => "編輯紀念日";
   @override
-  String get indexMr => "男";
+  String get plshMsg1 => "又過了1天，快來看看過了多少天吧！";
+  @override
+  String get plshMsg2 => "又過了1天，快來看看剩餘多少天吧！";
   @override
   String get pastAimsDay => "目標日：";
   @override
-  String get indexMonth => "月 ";
+  String get desirelistEdit => "修改";
   @override
-  String get loginMsg => "曾經加入過的用戶，請登入";
+  String get plshMsg3 => "又少了1天，快來看看剩餘多少天吧！";
   @override
-  String get userLifePush => "您的壽命";
+  String get dialogNoBtn => "取消";
   @override
-  String get indexYear => "年";
+  String get indexDesireTitle => "願望";
+  @override
+  String get indexNameTitleHint => "請輸入姓名";
+  @override
+  String get loginDialogJoin => "您尚未加入過會員是否註冊?";
+  @override
+  String get desirelistDel => "刪除";
+  @override
+  String get editdayNewTitle2 => "編輯倒數日";
   @override
   String get pastTooMsg => "過";
   @override
   String get appSplashName => "Death Day";
   @override
-  String get logoutTitle => "會員登出";
-  @override
   String get loginEditMailHint => "請輸入電子郵件";
-  @override
-  String get loginLostPassword => "忘記密碼";
-  @override
-  String get indexPast => "過去";
-  @override
-  String get loginTitle => "會員登入";
-  @override
-  String get indexDay => "日";
-  @override
-  String get indexDay2 => "天";
-  @override
-  String get toastMsgError2 => "剩下";
   @override
   String get indexTitleMsg => "您的壽命剩餘";
   @override
+  String get otherNumber => "版本號碼：1.2.0";
+  @override
   String get newUserErrorToastMsg1 => "該使用者尚未輸入資料";
   @override
-  String get loginBtn => "E-mail登入/註冊";
-  @override
-  String get appName => "人生倒數計時器";
-  @override
-  String get actionSettings => "編輯人生倒數";
-  @override
-  String get desireListSettings => "編輯願望";
-  @override
-  String get imageSettings => "編輯背景";
-  @override
-  String get futureTooMsg => "剩";
-  @override
-  String get toastYearError => "目前未滿一年";
-  @override
-  String get noLoginBtn => "體驗試用";
+  String get editMandataTitle => "編輯個人資料";
   @override
   String get loginTextCheck => "記住帳號";
   @override
@@ -119,13 +181,1087 @@ class zh_TW extends S {
   @override
   String get indexMiss => "女";
   @override
+  String get indexDesireHint => "請選擇最想完成的願望";
+  @override
+  String get dialogTitle => "訊息";
+  @override
+  String get indexPutBtn => "送出";
+  @override
+  String get dialogNoLoginMain => "您目前為試用狀態，無法設定願望，是否結束試用前往登入？";
+  @override
+  String get newdayNewMsgHint => "請輸入倒數事件名稱";
+  @override
+  String get pastArray7 => "(週日)";
+  @override
+  String get indexMonth => "月 ";
+  @override
+  String get userLifePush => "您的壽命";
+  @override
+  String get desireEdit => "修改願望";
+  @override
+  String get indexBirthdayTitle => "生日：";
+  @override
+  String get login => "登入";
+  @override
+  String get privacyTitle => "個資宣告";
+  @override
+  String get loginLostPassword => "忘記密碼";
+  @override
+  String get otherBottomMsg => "© 2019 人生倒數計時器團隊 版權所有 侵害必究";
+  @override
+  String get loginTitle => "會員登入";
+  @override
+  String get pastArray1 => "(週一)";
+  @override
+  String get pastArray2 => "(週二)";
+  @override
+  String get pastArray3 => "(週三)";
+  @override
+  String get pastArray4 => "(週四)";
+  @override
+  String get pastArray5 => "(週五)";
+  @override
+  String get desirelistSetting => "設定";
+  @override
+  String get pastArray6 => "(週六)";
+  @override
+  String get progressMsg => "請等待...";
+  @override
+  String get indexSexTitle => "性別：";
+  @override
+  String get indexSmoking => "是否有抽菸習慣";
+  @override
+  String get imageSettings => "編輯背景";
+  @override
+  String get desirelistNocheck => "未完成願望";
+  @override
+  String get desirelistNewTitle => "新增願望";
+  @override
+  String get toastYearError => "目前未滿一年";
+  @override
+  String get aboutTitle => "關於";
+  @override
+  String get shareTitle => "分享";
+  @override
+  String get indexNameTitle => "姓名：";
+  @override
   String get loginEditPasswordHint => "請輸入密碼";
   @override
+  String get newdayNewMsgTitle1 => "事件";
+  @override
+  String get newdayNewMsgTitle2 => "事件：";
+  @override
+  String get newdayNewDayError1 => "倒數日期";
+  @override
+  String get desirelistCheck => "完成願望";
+  @override
+  String get newdayNewDayError2 => "未填寫，請您重新確認";
+  @override
+  String get newdayNewTitle2 => "新增倒數日";
+  @override
+  String get newdayNewTitle1 => "新增紀念日";
+  @override
+  String get indexBirthdayHint => "請選擇生日";
+  @override
+  String get indexDesireTitle2 => "願望：";
+  @override
+  String get logoutTitle => "會員登出";
+  @override
+  String get indexBirthdayMsg => "生日";
+  @override
+  String get personalMsg => "本行動應用程式在獲得您同意之前提下，基於意見處理、消費者服務及行銷之目的，向您蒐集上述欄位之個人資料，並僅供人生倒數計時團隊就前述目的範圍及存續期間內，作合於我國相關法令且必要利用，除履行法定義務或經您同意之情形外，不再另作其他處理或利用。針對您所提供之個人資料，可按我國個人資料保護法第3條規定行使權利。倘若您未能提供欄位所需資料，本行動應用程式將無法適時或完整提供回覆或服務，而將會影響您之權益。";
+  @override
+  String get desirelistHint => "請輸入最想完成的願望";
+  @override
+  String get toastMsgError2 => "剩下";
+  @override
+  String get toastMag1 => "登入成功";
+  @override
+  String get newdayNewPutBtn => "完成";
+  @override
+  String get toastMag3 => "註冊成功";
+  @override
+  String get loginBtn => "E-mail登入/註冊";
+  @override
+  String get toastMag2 => "帳號錯誤";
+  @override
+  String get toastMag9 => "無此用戶";
+  @override
+  String get toastMag8 => "請再次確認帳號以及密碼";
+  @override
+  String get toastMag5 => "已傳送E-mail";
+  @override
+  String get futureTooMsg => "剩";
+  @override
+  String get toastMag4 => "密碼錯誤";
+  @override
+  String get toastMag7 => "此帳號申請時不為FB登入";
+  @override
+  String get toastMag6 => "E-mail寄送失敗";
+  @override
+  String get noLoginBtn => "體驗試用";
+  @override
   String get toastMsgError => "過了";
+  @override
+  String get desirelistTitle => "願望設定";
+  @override
+  String get indexFuture => "未來";
+  @override
+  String get indexSexHint => "請選擇性別";
+  @override
+  String get newdayNewTop => "置頂：";
+  @override
+  String get toastMag11 => "帳號格式錯誤";
+  @override
+  String get indexMr => "男";
+  @override
+  String get toastMag12 => "密碼長度必須為6個字元以上";
+  @override
+  String get toastMag10 => "登入錯誤請重新登入";
+  @override
+  String get loginMsg => "曾經加入過的用戶，請登入";
+  @override
+  String get indexYear => "年";
+  @override
+  String get newdayNewPush => "通知：";
+  @override
+  String get indexPush => "通知：(每日1次 8:00)";
+  @override
+  String get newdayNewDayTitle => "日期：";
+  @override
+  String get indexPast => "過去";
+  @override
+  String get desirelistTopMsg => "您在人生最後的日子有一定想要完成的願望嗎？\n列出您的願望，在未來日子裡好好審視完成了幾件";
+  @override
+  String get indexDay => "日";
+  @override
+  String get indexDay2 => "天";
+  @override
+  String get appName => "人生倒數計時器";
+  @override
+  String get actionSettings => "編輯人生倒數";
+  @override
+  String get desireListSettings => "編輯願望";
+  @override
+  String get indexSetting => "人生倒數設定";
+  @override
+  String get newdayNewDayHint => "請選擇倒數日期";
+  @override
+  String get indexSexMsg => "性別";
+  @override
+  String get dialogOkBtn => "確定";
+  @override
+  String get personalTitle => "個資委託宣告";
+  @override
+  String get indexNameMsg => "姓名";
 }
 
-class en extends S {
-  const en();
+class $zh_TW extends S {
+  const $zh_TW();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get editdayNewTitle1 => "編輯紀念日";
+  @override
+  String get plshMsg1 => "又過了1天，快來看看過了多少天吧！";
+  @override
+  String get plshMsg2 => "又過了1天，快來看看剩餘多少天吧！";
+  @override
+  String get pastAimsDay => "目標日：";
+  @override
+  String get desirelistEdit => "修改";
+  @override
+  String get plshMsg3 => "又少了1天，快來看看剩餘多少天吧！";
+  @override
+  String get dialogNoBtn => "取消";
+  @override
+  String get indexDesireTitle => "願望";
+  @override
+  String get indexNameTitleHint => "請輸入姓名";
+  @override
+  String get loginDialogJoin => "您尚未加入過會員是否註冊?";
+  @override
+  String get desirelistDel => "刪除";
+  @override
+  String get editdayNewTitle2 => "編輯倒數日";
+  @override
+  String get pastTooMsg => "過";
+  @override
+  String get appSplashName => "Death Day";
+  @override
+  String get loginEditMailHint => "請輸入電子郵件";
+  @override
+  String get indexTitleMsg => "您的壽命剩餘";
+  @override
+  String get otherNumber => "版本號碼：1.2.0";
+  @override
+  String get newUserErrorToastMsg1 => "該使用者尚未輸入資料";
+  @override
+  String get editMandataTitle => "編輯個人資料";
+  @override
+  String get loginTextCheck => "記住帳號";
+  @override
+  String get toastNoLogin => "您目前為試用狀態，過去/未來只能新增一組，是否需要登入？";
+  @override
+  String get indexMiss => "女";
+  @override
+  String get indexDesireHint => "請選擇最想完成的願望";
+  @override
+  String get dialogTitle => "訊息";
+  @override
+  String get indexPutBtn => "送出";
+  @override
+  String get dialogNoLoginMain => "您目前為試用狀態，無法設定願望，是否結束試用前往登入？";
+  @override
+  String get newdayNewMsgHint => "請輸入倒數事件名稱";
+  @override
+  String get pastArray7 => "(週日)";
+  @override
+  String get indexMonth => "月 ";
+  @override
+  String get userLifePush => "您的壽命";
+  @override
+  String get desireEdit => "修改願望";
+  @override
+  String get indexBirthdayTitle => "生日：";
+  @override
+  String get login => "登入";
+  @override
+  String get privacyTitle => "個資宣告";
+  @override
+  String get loginLostPassword => "忘記密碼";
+  @override
+  String get otherBottomMsg => "© 2019 人生倒數計時器團隊 版權所有 侵害必究";
+  @override
+  String get loginTitle => "會員登入";
+  @override
+  String get pastArray1 => "(週一)";
+  @override
+  String get pastArray2 => "(週二)";
+  @override
+  String get pastArray3 => "(週三)";
+  @override
+  String get pastArray4 => "(週四)";
+  @override
+  String get pastArray5 => "(週五)";
+  @override
+  String get desirelistSetting => "設定";
+  @override
+  String get pastArray6 => "(週六)";
+  @override
+  String get progressMsg => "請等待...";
+  @override
+  String get indexSexTitle => "性別：";
+  @override
+  String get indexSmoking => "是否有抽菸習慣";
+  @override
+  String get imageSettings => "編輯背景";
+  @override
+  String get desirelistNocheck => "未完成願望";
+  @override
+  String get desirelistNewTitle => "新增願望";
+  @override
+  String get toastYearError => "目前未滿一年";
+  @override
+  String get aboutTitle => "關於";
+  @override
+  String get shareTitle => "分享";
+  @override
+  String get indexNameTitle => "姓名：";
+  @override
+  String get loginEditPasswordHint => "請輸入密碼";
+  @override
+  String get newdayNewMsgTitle1 => "事件";
+  @override
+  String get newdayNewMsgTitle2 => "事件：";
+  @override
+  String get newdayNewDayError1 => "倒數日期";
+  @override
+  String get desirelistCheck => "完成願望";
+  @override
+  String get newdayNewDayError2 => "未填寫，請您重新確認";
+  @override
+  String get newdayNewTitle2 => "新增倒數日";
+  @override
+  String get newdayNewTitle1 => "新增紀念日";
+  @override
+  String get indexBirthdayHint => "請選擇生日";
+  @override
+  String get indexDesireTitle2 => "願望：";
+  @override
+  String get logoutTitle => "會員登出";
+  @override
+  String get indexBirthdayMsg => "生日";
+  @override
+  String get personalMsg => "本行動應用程式在獲得您同意之前提下，基於意見處理、消費者服務及行銷之目的，向您蒐集上述欄位之個人資料，並僅供人生倒數計時團隊就前述目的範圍及存續期間內，作合於我國相關法令且必要利用，除履行法定義務或經您同意之情形外，不再另作其他處理或利用。針對您所提供之個人資料，可按我國個人資料保護法第3條規定行使權利。倘若您未能提供欄位所需資料，本行動應用程式將無法適時或完整提供回覆或服務，而將會影響您之權益。";
+  @override
+  String get desirelistHint => "請輸入最想完成的願望";
+  @override
+  String get toastMsgError2 => "剩下";
+  @override
+  String get toastMag1 => "登入成功";
+  @override
+  String get newdayNewPutBtn => "完成";
+  @override
+  String get toastMag3 => "註冊成功";
+  @override
+  String get loginBtn => "E-mail登入/註冊";
+  @override
+  String get toastMag2 => "帳號錯誤";
+  @override
+  String get toastMag9 => "無此用戶";
+  @override
+  String get toastMag8 => "請再次確認帳號以及密碼";
+  @override
+  String get toastMag5 => "已傳送E-mail";
+  @override
+  String get futureTooMsg => "剩";
+  @override
+  String get toastMag4 => "密碼錯誤";
+  @override
+  String get toastMag7 => "此帳號申請時不為FB登入";
+  @override
+  String get toastMag6 => "E-mail寄送失敗";
+  @override
+  String get noLoginBtn => "體驗試用";
+  @override
+  String get toastMsgError => "過了";
+  @override
+  String get desirelistTitle => "願望設定";
+  @override
+  String get indexFuture => "未來";
+  @override
+  String get indexSexHint => "請選擇性別";
+  @override
+  String get newdayNewTop => "置頂：";
+  @override
+  String get toastMag11 => "帳號格式錯誤";
+  @override
+  String get indexMr => "男";
+  @override
+  String get toastMag12 => "密碼長度必須為6個字元以上";
+  @override
+  String get toastMag10 => "登入錯誤請重新登入";
+  @override
+  String get loginMsg => "曾經加入過的用戶，請登入";
+  @override
+  String get indexYear => "年";
+  @override
+  String get newdayNewPush => "通知：";
+  @override
+  String get indexPush => "通知：(每日1次 8:00)";
+  @override
+  String get newdayNewDayTitle => "日期：";
+  @override
+  String get indexPast => "過去";
+  @override
+  String get desirelistTopMsg => "您在人生最後的日子有一定想要完成的願望嗎？\n列出您的願望，在未來日子裡好好審視完成了幾件";
+  @override
+  String get indexDay => "日";
+  @override
+  String get indexDay2 => "天";
+  @override
+  String get appName => "人生倒數計時器";
+  @override
+  String get actionSettings => "編輯人生倒數";
+  @override
+  String get desireListSettings => "編輯願望";
+  @override
+  String get indexSetting => "人生倒數設定";
+  @override
+  String get newdayNewDayHint => "請選擇倒數日期";
+  @override
+  String get indexSexMsg => "性別";
+  @override
+  String get dialogOkBtn => "確定";
+  @override
+  String get personalTitle => "個資委託宣告";
+  @override
+  String get indexNameMsg => "姓名";
+}
+
+class $ko_KR extends S {
+  const $ko_KR();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get editdayNewTitle1 => "현충일 편집";
+  @override
+  String get plshMsg1 => "며칠 후에, 며칠을 보러와!";
+  @override
+  String get plshMsg2 => "다른 날이 지나면 몇 일 남았는지와!";
+  @override
+  String get pastAimsDay => "Destination Day :";
+  @override
+  String get desirelistEdit => "수정";
+  @override
+  String get plshMsg3 => "하루가 더 지났으며 몇 일 남았는지와 서 알겠습니다.";
+  @override
+  String get dialogNoBtn => "취소";
+  @override
+  String get indexDesireTitle => "Wish";
+  @override
+  String get indexNameTitleHint => "이름을 입력하십시오.";
+  @override
+  String get loginDialogJoin => "회원 가입에 가입하지 않으셨습니까?";
+  @override
+  String get desirelistDel => "삭제";
+  @override
+  String get editdayNewTitle2 => "카운트 다운 일 편집";
+  @override
+  String get pastTooMsg => "over";
+  @override
+  String get appSplashName => "Death Day";
+  @override
+  String get loginEditMailHint => "이메일을 입력하십시오";
+  @override
+  String get indexTitleMsg => "당신의 인생은 남습니다";
+  @override
+  String get otherNumber => "버전 번호：1.2.0";
+  @override
+  String get newUserErrorToastMsg1 => "이 사용자는 아직 데이터를 입력하지 않았습니다";
+  @override
+  String get editMandataTitle => "프로필 편집";
+  @override
+  String get loginTextCheck => "계정 기억";
+  @override
+  String get toastNoLogin => "현재 재판 상태입니다. 과거/미래에 하나만 추가 할 수 있습니다. 로그인해야합니까?";
+  @override
+  String get indexMiss => "여성";
+  @override
+  String get indexDesireHint => "가장 많이 쓰고 싶은 소원을 선택하십시오.";
+  @override
+  String get dialogTitle => "message";
+  @override
+  String get indexPutBtn => "보내기";
+  @override
+  String get dialogNoLoginMain => "현재 경험을 위해, 로그인 경험을 종료할지 여부, 소원을 설정할 수 없습니다?";
+  @override
+  String get newdayNewMsgHint => "카운트 다운 이벤트 이름을 입력하십시오.";
+  @override
+  String get pastArray7 => "(일)";
+  @override
+  String get indexMonth => "월";
+  @override
+  String get userLifePush => "당신의 인생";
+  @override
+  String get desireEdit => "소원 수정";
+  @override
+  String get indexBirthdayTitle => "생일 :";
+  @override
+  String get login => "로그인";
+  @override
+  String get privacyTitle => "Fundamental Announcement";
+  @override
+  String get loginLostPassword => "비밀번호 분실";
+  @override
+  String get otherBottomMsg => "© 2019 사망일 팀 저작권 침해";
+  @override
+  String get loginTitle => "회원 로그인";
+  @override
+  String get pastArray1 => "(월)";
+  @override
+  String get pastArray2 => "(화)";
+  @override
+  String get pastArray3 => "(수)";
+  @override
+  String get pastArray4 => "(목)";
+  @override
+  String get pastArray5 => "(금)";
+  @override
+  String get desirelistSetting => "설정";
+  @override
+  String get pastArray6 => "(토)";
+  @override
+  String get progressMsg => "잠시 기다려주십시오 ...";
+  @override
+  String get indexSexTitle => "성별 :";
+  @override
+  String get indexSmoking => "흡연 습관 있습니까?";
+  @override
+  String get imageSettings => "배경 편집";
+  @override
+  String get desirelistNocheck => "미완성 소원";
+  @override
+  String get desirelistNewTitle => "추가 소원";
+  @override
+  String get toastYearError => "현재 1 년 미만";
+  @override
+  String get aboutTitle => "About";
+  @override
+  String get shareTitle => "공유";
+  @override
+  String get indexNameTitle => "이름 :";
+  @override
+  String get loginEditPasswordHint => "비밀번호를 입력하십시오";
+  @override
+  String get newdayNewMsgTitle1 => "이벤트";
+  @override
+  String get newdayNewMsgTitle2 => "이벤트 :";
+  @override
+  String get newdayNewDayError1 => "카운트 다운 날짜";
+  @override
+  String get desirelistCheck => "소원을 완료하십시오";
+  @override
+  String get newdayNewDayError2 => "채워지지 않았습니다. 재확인하십시오";
+  @override
+  String get newdayNewTitle2 => "카운트 다운 일 추가";
+  @override
+  String get newdayNewTitle1 => "새로운 기념일";
+  @override
+  String get indexBirthdayHint => "생일을 선택하십시오.";
+  @override
+  String get indexDesireTitle2 => "소원 :";
+  @override
+  String get logoutTitle => "회원 로그 아웃";
+  @override
+  String get indexBirthdayMsg => "생일";
+  @override
+  String get personalMsg => "이 모바일 앱은 의견 처리, 소비자 서비스 및 마케팅 목적을 위해 제출되며 의견 처리, 소비자 서비스 및 마케팅 목적으로 위의 필드에서 개인 데이터를 수집하며 카운트 다운 팀 전용입니다. 또한 중국의 관련 법령 및 필요한 사용법에 따라 법적 의무 또는 귀하의 동의를 얻는 것 이외에 다른 어떠한 취급이나 사용도하지 않습니다. 귀하가 제공 한 개인 데이터는 당사국의 개인 데이터에 따라 보호 될 수 있습니다. 이 법 제 3 조에는 권리 행사가 포함되어 있습니다. 현장에서 필요한 정보를 제공하지 않으면 모바일 응용 프로그램이 적시에 또는 완전한 방식으로 응답이나 서비스를 제공하지 못해 귀하의 이익에 영향을 미칩니다. ";
+  @override
+  String get desirelistHint => "완료 하시겠습니까?";
+  @override
+  String get toastMsgError2 => "남음";
+  @override
+  String get toastMag1 => "로그인 성공";
+  @override
+  String get newdayNewPutBtn => "완료";
+  @override
+  String get toastMag3 => "성공적으로 등록되었습니다";
+  @override
+  String get loginBtn => "전자 메일 로그인/등록";
+  @override
+  String get toastMag2 => "계정 오류";
+  @override
+  String get toastMag9 => "해당 사용자 없음";
+  @override
+  String get toastMag8 => "계정 번호와 비밀번호를 다시 확인하십시오";
+  @override
+  String get toastMag5 => "전자 메일이 전송되었습니다";
+  @override
+  String get futureTooMsg => "남은 시간";
+  @override
+  String get toastMag4 => "비밀번호 오류";
+  @override
+  String get toastMag7 => "이 계정은 신청할 때 FB 로그인이 아닙니다.";
+  @override
+  String get toastMag6 => "전자 메일을 보내지 못했습니다.";
+  @override
+  String get noLoginBtn => "체험판";
+  @override
+  String get toastMsgError => "너무";
+  @override
+  String get desirelistTitle => "설정하기";
+  @override
+  String get indexFuture => "미래";
+  @override
+  String get indexSexHint => "성별을 선택하십시오";
+  @override
+  String get newdayNewTop => "Top :";
+  @override
+  String get toastMag11 => "계정 형식이 잘못되었습니다.";
+  @override
+  String get indexMr => "Men";
+  @override
+  String get toastMag12 => "암호는 6 자 이상이어야합니다";
+  @override
+  String get toastMag10 => "로그인 오류, 다시 로그인하십시오.";
+  @override
+  String get loginMsg => "가입 한 사용자, 로그인하십시오";
+  @override
+  String get indexYear => "year";
+  @override
+  String get newdayNewPush => "알림 :";
+  @override
+  String get indexPush => "알림 : (1 일 1:00)";
+  @override
+  String get newdayNewDayTitle => "날짜 :";
+  @override
+  String get indexPast => "과거";
+  @override
+  String get desirelistTopMsg => "인생의 마지막 날에 끝내고 싶은 욕망이 있으십니까?\n원하는대로하고 몇 가지 리뷰를 남겨주세요.";
+  @override
+  String get indexDay => "day";
+  @override
+  String get indexDay2 => "day";
+  @override
+  String get appName => "죽음의 날";
+  @override
+  String get actionSettings => "편집 생명 카운트 다운";
+  @override
+  String get desireListSettings => "소원 편집";
+  @override
+  String get indexSetting => "수명 카운트 다운";
+  @override
+  String get newdayNewDayHint => "카운트 다운 날짜를 선택하십시오";
+  @override
+  String get indexSexMsg => "성별";
+  @override
+  String get dialogOkBtn => "OK";
+  @override
+  String get personalTitle => "기본 위탁 공고";
+  @override
+  String get indexNameMsg => "이름";
+}
+
+class $en extends S {
+  const $en();
+}
+
+class $zh_CN extends S {
+  const $zh_CN();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get editdayNewTitle1 => "编辑纪念日";
+  @override
+  String get plshMsg1 => "又过了1天，快来看看过了多少天吧！";
+  @override
+  String get plshMsg2 => "又過了1天，快來看看剩餘多少天吧！";
+  @override
+  String get pastAimsDay => "目标日：";
+  @override
+  String get desirelistEdit => "修改";
+  @override
+  String get plshMsg3 => "又过了1天，快来看看剩余多少天吧！";
+  @override
+  String get dialogNoBtn => "取消";
+  @override
+  String get indexDesireTitle => "愿望";
+  @override
+  String get indexNameTitleHint => "请输入姓名";
+  @override
+  String get loginDialogJoin => "您尚未加入过会员是否注册?";
+  @override
+  String get desirelistDel => "删除";
+  @override
+  String get editdayNewTitle2 => "编辑倒数日";
+  @override
+  String get pastTooMsg => "过";
+  @override
+  String get appSplashName => "Death Day";
+  @override
+  String get loginEditMailHint => "请输入电子邮件";
+  @override
+  String get indexTitleMsg => "您的寿命剩余";
+  @override
+  String get otherNumber => "版本号码：1.2.0";
+  @override
+  String get newUserErrorToastMsg1 => "该使用者尚未输入资料";
+  @override
+  String get editMandataTitle => "编辑个人资料";
+  @override
+  String get loginTextCheck => "记住帐号";
+  @override
+  String get toastNoLogin => "您目前为试用状态，过去/未来只能新增一组，是否需要登入？";
+  @override
+  String get indexMiss => "女";
+  @override
+  String get indexDesireHint => "请选择最想完成的愿望";
+  @override
+  String get dialogTitle => "讯息";
+  @override
+  String get indexPutBtn => "送出";
+  @override
+  String get dialogNoLoginMain => "您目前为试用状态，无法设定愿望，是否结束试用前往登入？";
+  @override
+  String get newdayNewMsgHint => "请输入倒数事件名称";
+  @override
+  String get pastArray7 => "(周日)";
+  @override
+  String get indexMonth => "月 ";
+  @override
+  String get userLifePush => "您的寿命";
+  @override
+  String get desireEdit => "修改愿望";
+  @override
+  String get indexBirthdayTitle => "生日：";
+  @override
+  String get login => "登入";
+  @override
+  String get privacyTitle => "个资宣告";
+  @override
+  String get loginLostPassword => "忘记密码";
+  @override
+  String get otherBottomMsg => "© 2019 人生倒数计时器团队 版权所有 侵害必究";
+  @override
+  String get loginTitle => "会员登入";
+  @override
+  String get pastArray1 => "(周一)";
+  @override
+  String get pastArray2 => "(周二)";
+  @override
+  String get pastArray3 => "(周三)";
+  @override
+  String get pastArray4 => "(周四)";
+  @override
+  String get pastArray5 => "(周五)";
+  @override
+  String get desirelistSetting => "设定";
+  @override
+  String get pastArray6 => "(周六)";
+  @override
+  String get progressMsg => "请等待...";
+  @override
+  String get indexSexTitle => "性別：";
+  @override
+  String get indexSmoking => "是否有抽烟习惯";
+  @override
+  String get imageSettings => "编辑背景";
+  @override
+  String get desirelistNocheck => "未完成愿望";
+  @override
+  String get desirelistNewTitle => "新增愿望";
+  @override
+  String get toastYearError => "目前未满一年";
+  @override
+  String get aboutTitle => "关于";
+  @override
+  String get shareTitle => "分享";
+  @override
+  String get indexNameTitle => "姓名：";
+  @override
+  String get loginEditPasswordHint => "请输入密码";
+  @override
+  String get newdayNewMsgTitle1 => "事件";
+  @override
+  String get newdayNewMsgTitle2 => "事件：";
+  @override
+  String get newdayNewDayError1 => "倒数日期";
+  @override
+  String get desirelistCheck => "完成愿望";
+  @override
+  String get newdayNewDayError2 => "未填写，请您重新确认";
+  @override
+  String get newdayNewTitle2 => "新增倒数日";
+  @override
+  String get newdayNewTitle1 => "新增纪念日";
+  @override
+  String get indexBirthdayHint => "请选择生日";
+  @override
+  String get indexDesireTitle2 => "愿望：";
+  @override
+  String get logoutTitle => "会员登出";
+  @override
+  String get indexBirthdayMsg => "生日";
+  @override
+  String get personalMsg => "本行动应用程式在获得您同意之前提下，基于意见处理、消费者服务及行销之目的，向您搜集上述栏位之个人资料，并仅供人生倒数计时团队就前述目的范围及存续期间内，作合于我国相关法令且必要利用，除履行法定义务或经您同意之情形外，不再另作其他处理或利用。针对您所提供之个人资料，可按我国个人资料保护法第3条规定行使权利。倘若您未能提供栏位所需资料，本行动应用程式将无法适时或完整提供回覆或服务，而将会影响您之权益。";
+  @override
+  String get desirelistHint => "请输入最想完成的愿望";
+  @override
+  String get toastMsgError2 => "剩下";
+  @override
+  String get toastMag1 => "登入成功";
+  @override
+  String get newdayNewPutBtn => "完成";
+  @override
+  String get toastMag3 => "注册成功";
+  @override
+  String get loginBtn => "E-mail登入/注册";
+  @override
+  String get toastMag2 => "帐号错误";
+  @override
+  String get toastMag9 => "无此用户";
+  @override
+  String get toastMag8 => "请再次确认帐号以及密码";
+  @override
+  String get toastMag5 => "已传送E-mail";
+  @override
+  String get futureTooMsg => "剩";
+  @override
+  String get toastMag4 => "密码错误";
+  @override
+  String get toastMag7 => "此帐号申请时不为FB登入";
+  @override
+  String get toastMag6 => "E-mail寄送失败";
+  @override
+  String get noLoginBtn => "体验试用";
+  @override
+  String get toastMsgError => "过了";
+  @override
+  String get desirelistTitle => "愿望设定";
+  @override
+  String get indexFuture => "未来";
+  @override
+  String get indexSexHint => "请选择性别";
+  @override
+  String get newdayNewTop => "置頂：";
+  @override
+  String get toastMag11 => "帐号格式错误";
+  @override
+  String get indexMr => "男";
+  @override
+  String get toastMag12 => "密码长度必须为6个字元以上";
+  @override
+  String get toastMag10 => "登入错误请重新登入";
+  @override
+  String get loginMsg => "曾经加入过的用户，请登入";
+  @override
+  String get indexYear => "年";
+  @override
+  String get newdayNewPush => "通知：";
+  @override
+  String get indexPush => "通知：(每日1次 8:00)";
+  @override
+  String get newdayNewDayTitle => "日期：";
+  @override
+  String get indexPast => "过去";
+  @override
+  String get desirelistTopMsg => "您在人生最后的日子有一定想要完成的愿望吗？\n列出您的愿望，在未来日子里好好审视完成了几件";
+  @override
+  String get indexDay => "日";
+  @override
+  String get indexDay2 => "天";
+  @override
+  String get appName => "人生倒数计时器";
+  @override
+  String get actionSettings => "编辑人生倒数";
+  @override
+  String get desireListSettings => "编辑愿望";
+  @override
+  String get indexSetting => "人生倒数设定";
+  @override
+  String get newdayNewDayHint => "请选择倒数日期";
+  @override
+  String get indexSexMsg => "性別";
+  @override
+  String get dialogOkBtn => "确定";
+  @override
+  String get personalTitle => "个资委托宣告";
+  @override
+  String get indexNameMsg => "姓名";
+}
+
+class $ja_JP extends S {
+  const $ja_JP();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+  @override
+  String get editdayNewTitle1 => "メモの編集";
+  @override
+  String get plshMsg1 => "又過了1天，快來看看過了多少天吧！";
+  @override
+  String get plshMsg2 => "又過了1天，快來看看剩餘多少天吧！";
+  @override
+  String get pastAimsDay => "日付：";
+  @override
+  String get desirelistEdit => "編集";
+  @override
+  String get plshMsg3 => "又少了1天，快來看看剩餘多少天吧！";
+  @override
+  String get dialogNoBtn => "キャンセル";
+  @override
+  String get indexDesireTitle => "願う";
+  @override
+  String get indexNameTitleHint => "ユーザー名";
+  @override
+  String get loginDialogJoin => "あなたはまだメンバーシップに参加しましたか?";
+  @override
+  String get desirelistDel => "削除";
+  @override
+  String get editdayNewTitle2 => "カウントダウンを編集";
+  @override
+  String get pastTooMsg => "過去の";
+  @override
+  String get appSplashName => "Death Day";
+  @override
+  String get loginEditMailHint => "メールを入力";
+  @override
+  String get indexTitleMsg => "残された生命";
+  @override
+  String get otherNumber => "バージョン番号：1.2.0";
+  @override
+  String get newUserErrorToastMsg1 => "該使用者尚未輸入資料";
+  @override
+  String get editMandataTitle => "ユーザーデータの編集";
+  @override
+  String get loginTextCheck => "アカウントを保存";
+  @override
+  String get toastNoLogin => "現在の経験では、過去または将来に1つしか追加できません";
+  @override
+  String get indexMiss => "女性";
+  @override
+  String get indexDesireHint => "完了するために、願いを選択します";
+  @override
+  String get dialogTitle => "メッセージ";
+  @override
+  String get indexPutBtn => "送信";
+  @override
+  String get dialogNoLoginMain => "現在の経験のために、ログインする経験を終了するか否か、願いを設定can`t？";
+  @override
+  String get newdayNewMsgHint => "イベントタイトル";
+  @override
+  String get pastArray7 => "(日)";
+  @override
+  String get indexMonth => "M ";
+  @override
+  String get userLifePush => "您的壽命";
+  @override
+  String get desireEdit => "修改願望";
+  @override
+  String get indexBirthdayTitle => "誕生日：";
+  @override
+  String get login => "ログイン";
+  @override
+  String get privacyTitle => "プライバシー";
+  @override
+  String get loginLostPassword => "パスワードを忘れる";
+  @override
+  String get otherBottomMsg => "© 2019 死の日チーム著作権侵害";
+  @override
+  String get loginTitle => "ログイン";
+  @override
+  String get pastArray1 => "(月)";
+  @override
+  String get pastArray2 => "(火)";
+  @override
+  String get pastArray3 => "(水)";
+  @override
+  String get pastArray4 => "(木)";
+  @override
+  String get pastArray5 => "(金)";
+  @override
+  String get desirelistSetting => "設定";
+  @override
+  String get pastArray6 => "(土)";
+  @override
+  String get progressMsg => "しばらくお待ちください...";
+  @override
+  String get indexSexTitle => "セックス：";
+  @override
+  String get indexSmoking => "是否有抽菸習慣";
+  @override
+  String get imageSettings => "背景を設定する";
+  @override
+  String get desirelistNocheck => "未完の希望";
+  @override
+  String get desirelistNewTitle => "願いを追加";
+  @override
+  String get toastYearError => "1年未満";
+  @override
+  String get aboutTitle => "について";
+  @override
+  String get shareTitle => "共有";
+  @override
+  String get indexNameTitle => "名前：";
+  @override
+  String get loginEditPasswordHint => "パスワードを入力する";
+  @override
+  String get newdayNewMsgTitle1 => "イベント";
+  @override
+  String get newdayNewMsgTitle2 => "イベント：";
+  @override
+  String get newdayNewDayError1 => "倒數日期";
+  @override
+  String get desirelistCheck => "完全な希望";
+  @override
+  String get newdayNewDayError2 => "未填寫，請您重新確認";
+  @override
+  String get newdayNewTitle2 => "新しいカウントダウン";
+  @override
+  String get newdayNewTitle1 => "新しいメモリアル";
+  @override
+  String get indexBirthdayHint => "誕生日なし";
+  @override
+  String get indexDesireTitle2 => "願う：";
+  @override
+  String get logoutTitle => "ログアウト";
+  @override
+  String get indexBirthdayMsg => "誕生日";
+  @override
+  String get personalMsg => "この行動申請は、お客様の同意を得る前に、意見の処理、消費者サービスおよびマーケティングの目的で上記のフィールドから個人情報を収集し、上記の目的と期間のみカウントダウンチームが利用することができます。 法律上の義務を果たすことに加えて、またはお客様の同意を得て、中国の関連する法律および必要な用途に従って、他の処理または使用は行われません。 あなたが提供する個人データについては、中国の個人データ保護法第3条に従ってあなたの権利を行使することができます。 フィールドに必要な情報を提供できなかった場合、モバイルアプリケーションは適時または完全な方法で応答やサービスを提供することができず、お客様の関心に影響を与えます。";
+  @override
+  String get desirelistHint => "請輸入最想完成的願望";
+  @override
+  String get toastMsgError2 => "残り";
+  @override
+  String get toastMag1 => "ログインOK";
+  @override
+  String get newdayNewPutBtn => "完了";
+  @override
+  String get toastMag3 => "参加する";
+  @override
+  String get loginBtn => "メールのログイン/参加";
+  @override
+  String get toastMag2 => "帳號錯誤";
+  @override
+  String get toastMag9 => "無此用戶";
+  @override
+  String get toastMag8 => "請再次確認帳號以及密碼";
+  @override
+  String get toastMag5 => "送信された電子メール";
+  @override
+  String get futureTooMsg => "残";
+  @override
+  String get toastMag4 => "密碼錯誤";
+  @override
+  String get toastMag7 => "此帳號申請時不為FB登入";
+  @override
+  String get toastMag6 => "電子メールが送信に失敗しました";
+  @override
+  String get noLoginBtn => "経験";
+  @override
+  String get toastMsgError => "過去の";
+  @override
+  String get desirelistTitle => "設定ウィッシュ";
+  @override
+  String get indexFuture => "将来の";
+  @override
+  String get indexSexHint => "セックスを選択";
+  @override
+  String get newdayNewTop => "上：";
+  @override
+  String get toastMag11 => "帳號格式錯誤";
+  @override
+  String get indexMr => "男性";
+  @override
+  String get toastMag12 => "密碼長度必須為6個字元以上";
+  @override
+  String get toastMag10 => "登入錯誤請重新登入";
+  @override
+  String get loginMsg => "ユーザー、ログインしてください";
+  @override
+  String get indexYear => "Y";
+  @override
+  String get newdayNewPush => "注意：";
+  @override
+  String get indexPush => "注意：(1日 8:00)";
+  @override
+  String get newdayNewDayTitle => "日付：";
+  @override
+  String get indexPast => "過去の";
+  @override
+  String get desirelistTopMsg => "最終的に完了したいと思っていますか？\nあなたの希望をリストし、いくつかの作品を見直してください";
+  @override
+  String get indexDay => "D";
+  @override
+  String get indexDay2 => "D";
+  @override
+  String get appName => "死日";
+  @override
+  String get actionSettings => "死の日を編集する";
+  @override
+  String get desireListSettings => "願いを編集する";
+  @override
+  String get indexSetting => "死の日の設定";
+  @override
+  String get newdayNewDayHint => "カウントダウンを選択";
+  @override
+  String get indexSexMsg => "セックス";
+  @override
+  String get dialogOkBtn => "OK";
+  @override
+  String get personalTitle => "個人的な宣言";
+  @override
+  String get indexNameMsg => "名前";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
@@ -133,8 +1269,12 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
+      Locale("zh", "HK"),
       Locale("zh", "TW"),
+      Locale("ko", "KR"),
       Locale("en", ""),
+      Locale("zh", "CN"),
+      Locale("ja", "JP"),
     ];
   }
 
@@ -175,12 +1315,20 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
     final String lang = getLang(locale);
     if (lang != null) {
       switch (lang) {
+        case "zh_HK":
+          return SynchronousFuture<S>(const $zh_HK());
         case "zh_TW":
-          return SynchronousFuture<S>(const zh_TW());
+          return SynchronousFuture<S>(const $zh_TW());
+        case "ko_KR":
+          return SynchronousFuture<S>(const $ko_KR());
         case "en":
-          return SynchronousFuture<S>(const en());
+          return SynchronousFuture<S>(const $en());
+        case "zh_CN":
+          return SynchronousFuture<S>(const $zh_CN());
+        case "ja_JP":
+          return SynchronousFuture<S>(const $ja_JP());
         default:
-        // NO-OP.
+          // NO-OP.
       }
     }
     return SynchronousFuture<S>(const S());
@@ -188,14 +1336,14 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) =>
-      locale != null && supportedLocales.contains(locale);
+    locale != null && supportedLocales.contains(locale);
 
   @override
   bool shouldReload(GeneratedLocalizationsDelegate old) => false;
 }
 
 String getLang(Locale l) => l == null
-    ? null
-    : l.countryCode != null && l.countryCode.isEmpty
-        ? l.languageCode
-        : l.toString();
+  ? null
+  : l.countryCode != null && l.countryCode.isEmpty
+    ? l.languageCode
+    : l.toString();

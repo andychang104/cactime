@@ -1,4 +1,5 @@
 import 'package:cactime/database/database_helper.dart';
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/model/PastData.dart';
 import 'package:cactime/util/notification.dart';
 import 'package:cactime/util/preferences.dart';
@@ -14,6 +15,9 @@ notification notificationclass = new notification();
 preferences preferencesclass = new preferences();
 var newDayText = new RichText(text: new TextSpan(text: ""));
 var dayNameEdit = TextEditingController(text: "");
+bool isInitState = false;
+bool isIos = false;
+
 
 
 class NewDay extends StatefulWidget {
@@ -44,7 +48,7 @@ class newDay extends State<NewDay> {
   var dayTextColor = Colors.black54;
 
   DateTime selectedDate = DateTime.now();
-  String newDayTextHint = "請選擇倒數日期";
+  String newDayTextHint = "";
   int year = DateTime.now().year;
   int month = DateTime.now().month;
   int day = DateTime.now().day;
@@ -107,30 +111,30 @@ class newDay extends State<NewDay> {
 
 
   //錯誤訊息確認
-  String checkErrorMsg() {
+  String checkErrorMsg(BuildContext context) {
     String errorMsg = "";
     if(dayNameEdit.text.length == 0){
-      errorMsg = "事件";
+      errorMsg = S.of(context).newdayNewMsgTitle1;
     }
-    if(newDayTextHint == "請選擇倒數日期"){
+    if(newDayTextHint == S.of(context).newdayNewDayHint){
       if(errorMsg.length != 0){
         errorMsg = errorMsg + "、";
       }
-      errorMsg = errorMsg + "倒數日期";
+      errorMsg = errorMsg + S.of(context).newdayNewDayError1;
     }
 
     if(errorMsg.length != 0){
-      errorMsg = errorMsg+"未填寫，請您重新確認";
+      errorMsg = errorMsg+S.of(context).newdayNewDayError2;
     }
     return errorMsg;
   }
 
   //顯示錯誤訊息Dialog
-  Future<Null> showMsgDialog(String msg) async {
+  Future<Null> showMsgDialog(String msg, BuildContext context) async {
     switch (await showDialog<String>(
       context: context,
       child: new AlertDialog(
-        title: new Text("訊息"),
+        title: new Text(S.of(context).dialogTitle),
         contentPadding: const EdgeInsets.all(16.0),
         content: new Row(
           children: <Widget>[
@@ -141,7 +145,7 @@ class newDay extends State<NewDay> {
         ),
         actions: <Widget>[
           new FlatButton(
-              child: const Text('確定'),
+              child: Text(S.of(context).dialogOkBtn),
               onPressed: () {
                 Navigator.pop(context);
               })
@@ -154,24 +158,31 @@ class newDay extends State<NewDay> {
 
   @override
   void initState() {
+    isInitState = true;
     dayNameEdit = TextEditingController(text: "");
     notificationclass.setNotificationsPlugin();
     super.initState();
   }
 
+  //塞入預設文案
+  void setText(BuildContext context) {
+    if (isInitState) {
+      isIos = Theme.of(context).platform == TargetPlatform.iOS;
+      newDayTextHint = S.of(context).newdayNewDayHint;
+      if(widget.type == 0){
+        widget.title = S.of(context).newdayNewTitle1;
+      }
+      else{
+        widget.title = S.of(context).newdayNewTitle2;
+      }
+      isInitState = false;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-
-    bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
-
-    if(widget.type == 0){
-      widget.title = "新增紀念日";
-    }
-    else{
-      widget.title = "新增倒數日";
-    }
-
+    setText(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
@@ -188,7 +199,7 @@ class newDay extends State<NewDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "事件：",
+                      S.of(context).newdayNewMsgTitle2,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -199,7 +210,7 @@ class newDay extends State<NewDay> {
                       child: new TextField(
                           controller: dayNameEdit,
                           decoration: InputDecoration(
-                            hintText: "請輸入倒數事件名稱",
+                            hintText: S.of(context).newdayNewMsgHint,
                             border: new UnderlineInputBorder(),
                           ),
                           style: TextStyle(
@@ -216,7 +227,7 @@ class newDay extends State<NewDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "日期：",
+                      S.of(context).newdayNewDayTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -255,7 +266,7 @@ class newDay extends State<NewDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "置頂：",
+                      S.of(context).newdayNewTop,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -278,7 +289,7 @@ class newDay extends State<NewDay> {
                 child: Row(
                   children: [
                     new Text(
-                      "通知：",
+                      S.of(context).newdayNewPush,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -304,7 +315,7 @@ class newDay extends State<NewDay> {
                       flex: 1,
                       child: new MaterialButton(
                         height: 45.0,
-                        child: Text("完成",
+                        child: Text(S.of(context).newdayNewPutBtn,
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white,
@@ -314,10 +325,10 @@ class newDay extends State<NewDay> {
                         textColor: Colors.white,
                         splashColor: Colors.black12,
                         onPressed: () {
-                          String errorMsg = checkErrorMsg();
+                          String errorMsg = checkErrorMsg(context);
 
                           if(errorMsg.length != 0){
-                              showMsgDialog(errorMsg);
+                              showMsgDialog(errorMsg, context);
                           }
                           else{
                             DateTime date2 = DateTime.now();
@@ -334,7 +345,7 @@ class newDay extends State<NewDay> {
                               difference = selectedDate.difference(date2).inDays.toString();
                             }
 
-                            notificationclass.showNotification(dayNameEdit.text, int.parse(time), widget.type);
+                            notificationclass.showNotification(dayNameEdit.text, int.parse(time), widget.type, context);
 
                             var dbHelper = DatabaseHelper();
                             PastData pastData = new PastData(dayNameEdit.text, year, month, day, valueTop.toString(), valuePush.toString(), difference, selectedDate.weekday, int.parse(time).toString());

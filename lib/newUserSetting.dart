@@ -1,3 +1,4 @@
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/mainIndex.dart';
 import 'package:cactime/util/desireEditWidget.dart';
 import 'package:cactime/util/localdata.dart';
@@ -16,12 +17,12 @@ notification notificationclass = new notification();
 desireEditWidget desireEditWidgetClass = new desireEditWidget();
 preferences preferencesclass = new preferences();
 var userNameEdit = TextEditingController(text: "");
+bool isInitState = false;
+bool isIos = false;
 
 
 class newUserSetting extends StatefulWidget {
   newUserSetting(this.uid, this.itemRef, this.type);
-
-  final String title = "人生倒數設定";
   final String uid;
   final int type;
   final DatabaseReference itemRef;
@@ -35,15 +36,15 @@ class newUser extends State<newUserSetting> {
 
   bool isCheck = false;
   System selectedSystem;
-  List<System> systemList = localdataclass.getSystemList();
+  List<System> systemList;
   toast toastclass = new toast();
 
   var test = Colors.black54;
   var desireTextColor = Colors.black54;
 
   DateTime selectedDate = DateTime.now();
-  String birthday = "請選擇生日";
-  String desirelist = "請選擇最想完成的願望";
+  String birthday = "";
+  String desirelist = "";
   RichText desireText = new RichText(text: new TextSpan(text: ""));
   int year = 2008;
   int month = 12;
@@ -87,10 +88,10 @@ class newUser extends State<newUserSetting> {
     });
   }
 
-  void setDesirelist(String msg){
+  void setDesirelist(String msg, BuildContext context){
     setState(() {
       if(msg.length == 0){
-        desirelist = "請選擇最想完成的願望";
+        desirelist = S.of(context).indexDesireHint;
         desireTextColor = Colors.black54;
       }
       else{
@@ -104,30 +105,30 @@ class newUser extends State<newUserSetting> {
 
 
   //錯誤訊息確認
-  String checkErrorMsg() {
+  String checkErrorMsg(BuildContext context) {
     String errorMsg = "";
     if(userNameEdit.text.length == 0){
-      errorMsg = "姓名";
+      errorMsg = S.of(context).indexNameMsg;
     }
-    if(birthday == "請選擇生日"){
+    if(birthday == S.of(context).indexBirthdayHint){
       if(errorMsg.length != 0){
         errorMsg = errorMsg + "、";
       }
-      errorMsg = errorMsg + "生日";
+      errorMsg = errorMsg + S.of(context).indexBirthdayMsg;
     }
     if(selectedSystem != null){
       if(selectedSystem.systemname.length == 0){
         if(errorMsg.length != 0){
           errorMsg = errorMsg + "、";
         }
-        errorMsg = errorMsg + "性別";
+        errorMsg = errorMsg + S.of(context).indexSexMsg;
       }
     }
     else{
       if(errorMsg.length != 0){
         errorMsg = errorMsg + "、";
       }
-      errorMsg = errorMsg + "性別";
+      errorMsg = errorMsg + S.of(context).indexSexMsg;
     }
 
     if(widget.type != 0){
@@ -136,19 +137,19 @@ class newUser extends State<newUserSetting> {
           if(errorMsg.length != 0){
             errorMsg = errorMsg + "、";
           }
-          errorMsg = errorMsg + "願望";
+          errorMsg = errorMsg + S.of(context).indexDesireTitle;
         }
       }
       else{
         if(errorMsg.length != 0){
           errorMsg = errorMsg + "、";
         }
-        errorMsg = errorMsg + "願望";
+        errorMsg = errorMsg + S.of(context).indexDesireTitle;
       }
     }
 
     if(errorMsg.length != 0){
-      errorMsg = errorMsg+"未填寫，請您重新確認";
+      errorMsg = errorMsg+S.of(context).newdayNewDayError2;
     }
     return errorMsg;
   }
@@ -158,7 +159,7 @@ class newUser extends State<newUserSetting> {
     switch (await showDialog<String>(
       context: context,
       child: new AlertDialog(
-        title: new Text("訊息"),
+        title: new Text(S.of(context).dialogTitle),
         contentPadding: const EdgeInsets.all(16.0),
         content: new Row(
           children: <Widget>[
@@ -169,7 +170,7 @@ class newUser extends State<newUserSetting> {
         ),
         actions: <Widget>[
           new FlatButton(
-              child: const Text('確定'),
+              child: Text(S.of(context).dialogOkBtn),
               onPressed: () {
                 Navigator.pop(context);
               })
@@ -179,14 +180,25 @@ class newUser extends State<newUserSetting> {
     }
   }
 
+  //塞入預設文案
+  void setText(BuildContext context) {
+    if (isInitState) {
+      isIos = Theme.of(context).platform == TargetPlatform.iOS;
+      birthday = S.of(context).indexBirthdayHint;
+      desirelist = S.of(context).indexDesireHint;
+      systemList = localdataclass.getSystemList(context);
+      isInitState = false;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    bool isIos = Theme.of(context).platform == TargetPlatform.iOS;
+    setText(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text(widget.title),
+        title: Text(S.of(context).indexSetting),
       ),
       body: new Container(
         margin: const EdgeInsets.all(4.0),
@@ -199,7 +211,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "姓名：",
+                      S.of(context).indexNameTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -210,7 +222,7 @@ class newUser extends State<newUserSetting> {
                       child: new TextField(
                           controller: userNameEdit,
                           decoration: InputDecoration(
-                            hintText: "請輸入姓名",
+                            hintText: S.of(context).indexNameTitleHint,
                             border: new UnderlineInputBorder(),
                           ),
                           style: TextStyle(
@@ -227,7 +239,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "生日：",
+                      S.of(context).indexBirthdayTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -266,7 +278,7 @@ class newUser extends State<newUserSetting> {
                 child: Row(
                   children: [
                     new Text(
-                      "性別：",
+                      S.of(context).indexSexTitle,
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -277,7 +289,7 @@ class newUser extends State<newUserSetting> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: new DropdownButton<System>(
-                          hint: new Text("請選擇性別",
+                          hint: new Text(S.of(context).indexSexHint,
                               style: TextStyle(
                                 fontSize: 16.0,
                               )),
@@ -317,7 +329,7 @@ class newUser extends State<newUserSetting> {
                         flex: 1,
                         child: new RichText(
                           text: new TextSpan(
-                              text: "是否有抽菸習慣",
+                              text: S.of(context).indexSmoking,
                               style: new TextStyle(
                                 fontSize: 16.0,
                                 color: Colors.black,
@@ -347,7 +359,7 @@ class newUser extends State<newUserSetting> {
                       flex: 1,
                       child: new MaterialButton(
                         height: 45.0,
-                        child: Text("送出",
+                        child: Text(S.of(context).indexPutBtn,
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white,
@@ -358,7 +370,7 @@ class newUser extends State<newUserSetting> {
                         splashColor: Colors.black12,
                         onPressed: () {
 
-                          String errorMsg = checkErrorMsg();
+                          String errorMsg = checkErrorMsg(context);
                           if(errorMsg.length != 0){
                             showMsgDialog(errorMsg);
                           }
@@ -384,7 +396,7 @@ class newUser extends State<newUserSetting> {
                             if(widget.type == 0){
 
                               preferencesclass.setString("uid", "nologin84598349");
-                              notificationclass.showNotification(userNameEdit.text+"您的壽命", 49522011, 99);
+                              notificationclass.showNotification(userNameEdit.text+S.of(context).userLifePush, 49522011, 99, context);
 
                               Navigator.of(context).pushAndRemoveUntil(
                                   new MaterialPageRoute(builder: (context) => new mainIndex("")
@@ -414,6 +426,7 @@ class newUser extends State<newUserSetting> {
 
   @override
   void initState() {
+    isInitState = true;
     notificationclass.setNotificationsPlugin();
     userdata.DesireList = null;
     super.initState();

@@ -151,7 +151,7 @@ class Test extends State<Index> {
           preferencesclass.setString("sex", sex);
           preferencesclass.setString("uid", uid);
 
-          notificationclass.showNotification(userName+S.of(context).userLifePush, 49522011, 99);
+          notificationclass.showNotification(userName+S.of(context).userLifePush, 49522011, 99, context);
 
           Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context) => new mainIndex("")), (route) => route == null);
 
@@ -312,7 +312,7 @@ class Test extends State<Index> {
 
                               showDialog(
                                   context: context,
-                                  child: new progressdialog().progress);
+                                  child: new progressdialog().showProgress(context));
 
                               loginclass.loginFirebase(context,
                                   userEmailEdit.text, userpasswordEdit.text, this);
@@ -387,7 +387,7 @@ class Test extends State<Index> {
                         child: new SignInButton(
                           Buttons.Facebook,
                           onPressed: () {
-                            loginclass.logInFaceBook(this);
+                            loginclass.logInFaceBook(this, context);
                           },
                           mini: true,
                         ),

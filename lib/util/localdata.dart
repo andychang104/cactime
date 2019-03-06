@@ -1,11 +1,13 @@
+import 'package:cactime/generated/i18n.dart';
 import 'package:cactime/util/system.dart';
+import 'package:flutter/cupertino.dart';
 
 class localdata {
   //取性別選單
-  List<System> getSystemList() {
+  List<System> getSystemList(BuildContext context) {
     List<System> systemList = <System>[
-      const System('男'),
-      const System('女'),
+      System(S.of(context).indexMr),
+      System(S.of(context).indexMiss),
     ];
     return systemList;
   }

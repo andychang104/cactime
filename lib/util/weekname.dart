@@ -1,9 +1,11 @@
+import 'package:cactime/generated/i18n.dart';
+import 'package:flutter/cupertino.dart';
+
 class weekname {
 
-  List<String> weekName = ["(週一)", "(週二)", "(週三)", "(週四)", "(週五)", "(週六)", "(週日)"];
-
   //取週
-  String getWeekName(int index) {
+  String getWeekName(int index, BuildContext context) {
+    List<String> weekName = [S.of(context).pastArray1, S.of(context).pastArray2, S.of(context).pastArray3, S.of(context).pastArray4, S.of(context).pastArray5, S.of(context).pastArray6, S.of(context).pastArray7];
     return weekName[index];
   }
 }
