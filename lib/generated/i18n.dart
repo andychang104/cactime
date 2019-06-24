@@ -1047,7 +1047,7 @@ class $ja_JP extends S {
   @override
   String get editdayNewTitle1 => "メモの編集";
   @override
-  String get plshMsg1 => "又過了1天，快來看看過了多少天吧！";
+  String get plshMsg1 => "まだ一日過ごしました、残り何日を確認しましょうか！";
   @override
   String get plshMsg2 => "又過了1天，快來看看剩餘多少天吧！";
   @override
@@ -1103,7 +1103,7 @@ class $ja_JP extends S {
   @override
   String get indexMonth => "M ";
   @override
-  String get userLifePush => "您的壽命";
+  String get userLifePush => "あなたの余命";
   @override
   String get desireEdit => "修改願望";
   @override
@@ -1137,7 +1137,7 @@ class $ja_JP extends S {
   @override
   String get indexSexTitle => "セックス：";
   @override
-  String get indexSmoking => "是否有抽菸習慣";
+  String get indexSmoking => "たばこを吸いますか？";
   @override
   String get imageSettings => "背景を設定する";
   @override
@@ -1179,7 +1179,7 @@ class $ja_JP extends S {
   @override
   String get personalMsg => "この行動申請は、お客様の同意を得る前に、意見の処理、消費者サービスおよびマーケティングの目的で上記のフィールドから個人情報を収集し、上記の目的と期間のみカウントダウンチームが利用することができます。 法律上の義務を果たすことに加えて、またはお客様の同意を得て、中国の関連する法律および必要な用途に従って、他の処理または使用は行われません。 あなたが提供する個人データについては、中国の個人データ保護法第3条に従ってあなたの権利を行使することができます。 フィールドに必要な情報を提供できなかった場合、モバイルアプリケーションは適時または完全な方法で応答やサービスを提供することができず、お客様の関心に影響を与えます。";
   @override
-  String get desirelistHint => "請輸入最想完成的願望";
+  String get desirelistHint => "入力してください一番叶えたい願いはなんですか";
   @override
   String get toastMsgError2 => "残り";
   @override
@@ -1191,17 +1191,17 @@ class $ja_JP extends S {
   @override
   String get loginBtn => "メールのログイン/参加";
   @override
-  String get toastMag2 => "帳號錯誤";
+  String get toastMag2 => "ユーザー名は正しくありません";
   @override
-  String get toastMag9 => "無此用戶";
+  String get toastMag9 => "ユーザー名存在しません";
   @override
-  String get toastMag8 => "請再次確認帳號以及密碼";
+  String get toastMag8 => "ユーザー名またはパスワードが正しくありません、入れ直してください";
   @override
   String get toastMag5 => "送信された電子メール";
   @override
   String get futureTooMsg => "残";
   @override
-  String get toastMag4 => "密碼錯誤";
+  String get toastMag4 => "パスワードは正しくありません";
   @override
   String get toastMag7 => "此帳號申請時不為FB登入";
   @override
@@ -1223,9 +1223,9 @@ class $ja_JP extends S {
   @override
   String get indexMr => "男性";
   @override
-  String get toastMag12 => "密碼長度必須為6個字元以上";
+  String get toastMag12 => "英数文字を組み合わせた6桁以上";
   @override
-  String get toastMag10 => "登入錯誤請重新登入";
+  String get toastMag10 => "エラー、ログイン直してみてください";
   @override
   String get loginMsg => "ユーザー、ログインしてください";
   @override
