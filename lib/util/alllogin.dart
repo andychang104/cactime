@@ -17,6 +17,12 @@ class alllogin{
   FacebookLogin facebookSignIn = new FacebookLogin();
   GoogleSignIn googleSignIn = new GoogleSignIn();
   var passwordCheckEdit = TextEditingController(text: "");
+  
+  String accountError = '17008';
+  String passwordError = '17009';
+  String noAccount = '17011';
+  String fbAccountError = '17012';
+  String passwordLength = '17026';
 
   //Firebase email登入忘記密碼
   Future sendPassword(BuildContext context, String email) async {
@@ -32,7 +38,7 @@ class alllogin{
       print(error);
       print("@@@@@-"+err.group(0));
 
-      if (err.group(0) == '17011'){
+      if (err.group(0) == noAccount){
         toastclass.showToast("該帳號不存在，請您先註冊");
       }
       else{
@@ -62,16 +68,16 @@ class alllogin{
       print(error);
       print("@@@@@-"+err.group(0));
 
-      if (err.group(0) == '17008'){
+      if (err.group(0) == accountError){
         toastclass.showToast("帳號格式錯誤");
       }
-      else if (err.group(0) == '17009'){
+      else if (err.group(0) == passwordError){
         toastclass.showToast("密碼錯誤");
       }
-      else if (err.group(0) == '17011'){
+      else if (err.group(0) == noAccount){
         toastclass.showToast("帳號錯誤");
       }
-      else if (err.group(0) == '17026'){
+      else if (err.group(0) == passwordLength){
         toastclass.showToast("密碼長度必須為6個字元以上");
       }
       else{
@@ -107,13 +113,13 @@ class alllogin{
       print(error);
       print(err.group(0));
 
-      if (err.group(0) == '17011'){
+      if (err.group(0) == accountError){
         showJoinCheckDialog(context, email, password);
       }
-      else if (err.group(0) == '17008'){
+      else if (err.group(0) == accountError){
         toastclass.showToast("帳號格式錯誤");
       }
-      else if (err.group(0) == '17009'){
+      else if (err.group(0) == passwordError){
         toastclass.showToast("密碼錯誤");
       }
       else{
@@ -212,13 +218,13 @@ class alllogin{
           var err = exp.firstMatch(error.toString());
           print(error);
           print("@@@@@@-"+err.group(0));
-          if (err.group(0) == '17011'){
+          if (err.group(0) == noAccount){
             toastclass.showToast("帳號錯誤");
           }
-          else if (err.group(0) == '17009'){
+          else if (err.group(0) == passwordError){
             toastclass.showToast("密碼錯誤");
           }
-          else if(err.group(0) == '17012'){
+          else if(err.group(0) == fbAccountError){
             toastclass.showToast("此帳號申請時不為FB登入");
           }
           else{
